@@ -3,8 +3,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 
 class GeometryTests {
@@ -44,11 +43,18 @@ class GeometryTests {
         double[] xCoordinates = {0, 0, 20};
         double[] yCoordinates = {0, 20,20};
         double ExpectedAngle = Math.PI/2;
-        double angle= Geometry.calculateAngle(xCoordinates[1],yCoordinates[1],xCoordinates[0],yCoordinates[0],xCoordinates[2],yCoordinates[2]);
+        double angle= Geometry.calculateAngle(xCoordinates[1],yCoordinates[1],xCoordinates[2],yCoordinates[2],xCoordinates[0],yCoordinates[0]);
+        //vertex stays the same but other points flip places
+        double flippedAngle= Geometry.calculateAngle(xCoordinates[1],yCoordinates[1],xCoordinates[0],yCoordinates[0],xCoordinates[2],yCoordinates[2]);
 
-        assertEquals(ExpectedAngle,angle ,0.0000000001f);
+        assertAll("Should return address of Oracle's headquarter",
+                () -> assertEquals(ExpectedAngle,angle ,0.0000000001f),
+                () -> assertEquals(ExpectedAngle,flippedAngle ,0.0000000001f)
+        );
+
 
     }
+
 
     @Test
     @DisplayName("Calculate angle invalid")
