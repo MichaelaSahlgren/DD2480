@@ -8,10 +8,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 class GeometryTests {
-    private Geometry geometryHelper;
+
     @BeforeEach
     public void setUp() throws Exception {
-        geometryHelper = new Geometry();
+
     }
 
 	@Test
@@ -21,7 +21,7 @@ class GeometryTests {
         double[] xCoordinates = {15, 35};
         double[] yCoordinates = {20, 5};
         double expectedLength = 25;
-        double distanceBetweenOneAndTwo= geometryHelper.calculateDistance(xCoordinates[0],yCoordinates[0],xCoordinates[1],yCoordinates[1]);
+        double distanceBetweenOneAndTwo= Geometry.calculateDistance(xCoordinates[0],yCoordinates[0],xCoordinates[1],yCoordinates[1]);
         assertEquals(expectedLength,distanceBetweenOneAndTwo ,"Distance calculated correct");
     }
 
@@ -32,7 +32,7 @@ class GeometryTests {
         double[] xCoordinates = {3, 4};
         double[] yCoordinates = {0, 0};
         double notExpectedLength = 5;
-        double distanceBetweenOneAndTwo= geometryHelper.calculateDistance(xCoordinates[0],yCoordinates[0],xCoordinates[1],yCoordinates[1]);
+        double distanceBetweenOneAndTwo= Geometry.calculateDistance(xCoordinates[0],yCoordinates[0],xCoordinates[1],yCoordinates[1]);
         assertNotEquals(notExpectedLength,distanceBetweenOneAndTwo ,"Distance calculated correct");
 
     }
