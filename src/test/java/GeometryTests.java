@@ -8,20 +8,15 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class GeometryTests {
 
-    @BeforeEach
-    public void setUp() throws Exception {
-
-    }
-
-	@Test
-	@DisplayName("Calculate Distance valid")
-	void calculateDistanceValid() {
+    @Test
+    @DisplayName("Calculate Distance valid")
+    void calculateDistanceValid() {
 
         double[] xCoordinates = {15, 35};
         double[] yCoordinates = {20, 5};
         double expectedLength = 25;
-        double distanceBetweenOneAndTwo= Geometry.calculateDistance(xCoordinates[0],yCoordinates[0],xCoordinates[1],yCoordinates[1]);
-        assertEquals(expectedLength,distanceBetweenOneAndTwo ,"Distance calculated correct");
+        double distanceBetweenOneAndTwo = Geometry.calculateDistance(xCoordinates[0], yCoordinates[0], xCoordinates[1], yCoordinates[1]);
+        assertEquals(expectedLength, distanceBetweenOneAndTwo, "Distance calculated correct");
     }
 
     @Test
@@ -31,8 +26,8 @@ class GeometryTests {
         double[] xCoordinates = {3, 4};
         double[] yCoordinates = {0, 0};
         double notExpectedLength = 5;
-        double distanceBetweenOneAndTwo= Geometry.calculateDistance(xCoordinates[0],yCoordinates[0],xCoordinates[1],yCoordinates[1]);
-        assertNotEquals(notExpectedLength,distanceBetweenOneAndTwo ,"Distance calculated correct");
+        double distanceBetweenOneAndTwo = Geometry.calculateDistance(xCoordinates[0], yCoordinates[0], xCoordinates[1], yCoordinates[1]);
+        assertNotEquals(notExpectedLength, distanceBetweenOneAndTwo, "Distance calculated correct");
 
     }
 
@@ -41,17 +36,16 @@ class GeometryTests {
     void calculateAngleValid() {
 
         double[] xCoordinates = {0, 0, 20};
-        double[] yCoordinates = {0, 20,20};
-        double ExpectedAngle = Math.PI/2;
-        double angle= Geometry.calculateAngle(xCoordinates[1],yCoordinates[1],xCoordinates[2],yCoordinates[2],xCoordinates[0],yCoordinates[0]);
+        double[] yCoordinates = {0, 20, 20};
+        double ExpectedAngle = Math.PI / 2;
+        double angle = Geometry.calculateAngle(xCoordinates[1], yCoordinates[1], xCoordinates[2], yCoordinates[2], xCoordinates[0], yCoordinates[0]);
         //vertex stays the same but other points flip places
-        double flippedAngle= Geometry.calculateAngle(xCoordinates[1],yCoordinates[1],xCoordinates[0],yCoordinates[0],xCoordinates[2],yCoordinates[2]);
+        double flippedAngle = Geometry.calculateAngle(xCoordinates[1], yCoordinates[1], xCoordinates[0], yCoordinates[0], xCoordinates[2], yCoordinates[2]);
 
-        assertAll("Should return address of Oracle's headquarter",
-                () -> assertEquals(ExpectedAngle,angle ,0.0000000001f),
-                () -> assertEquals(ExpectedAngle,flippedAngle ,0.0000000001f)
+        assertAll("Valid calculateAngle test",
+                () -> assertEquals(ExpectedAngle, angle, 0.0000000001f),
+                () -> assertEquals(ExpectedAngle, flippedAngle, 0.0000000001f)
         );
-
 
     }
 
@@ -61,12 +55,12 @@ class GeometryTests {
     void calculateAngleInvalid() {
 
         double[] xCoordinates = {0, 0, 20};
-        double[] yCoordinates = {0, 20,20};
-        double notExpectedAngle = Math.PI/2;
+        double[] yCoordinates = {0, 20, 20};
+        double notExpectedAngle = Math.PI / 2;
         //an invalid vertex is used and therefore should not give same results as valid test
-        double angle= Geometry.calculateAngle(xCoordinates[0],yCoordinates[0],xCoordinates[1],yCoordinates[1],xCoordinates[2],yCoordinates[2]);
+        double angle = Geometry.calculateAngle(xCoordinates[0], yCoordinates[0], xCoordinates[1], yCoordinates[1], xCoordinates[2], yCoordinates[2]);
 
-        assertNotEquals(notExpectedAngle,angle ,0.0000000001f);
+        assertNotEquals(notExpectedAngle, angle, 0.0000000001f);
 
     }
 }
