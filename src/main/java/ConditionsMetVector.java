@@ -14,7 +14,7 @@ public class ConditionsMetVector {
         
         //point 1
         double p1x = 0;
-        double p2x = 0;
+        double p1y = 0;
         
         //point 2
         double p2x = 0;
