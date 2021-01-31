@@ -36,4 +36,31 @@ class GeometryTests {
         assertNotEquals(notExpectedLength,distanceBetweenOneAndTwo ,"Distance calculated correct");
 
     }
+
+    @Test
+    @DisplayName("Calculate angle valid")
+    void calculateAngleValid() {
+
+        double[] xCoordinates = {0, 0, 20};
+        double[] yCoordinates = {0, 20,20};
+        double ExpectedAngle = Math.PI/2;
+        double angle= Geometry.calculateAngle(xCoordinates[1],yCoordinates[1],xCoordinates[0],yCoordinates[0],xCoordinates[2],yCoordinates[2]);
+
+        assertEquals(ExpectedAngle,angle ,0.0000000001f);
+
+    }
+
+    @Test
+    @DisplayName("Calculate angle invalid")
+    void calculateAngleInvalid() {
+
+        double[] xCoordinates = {0, 0, 20};
+        double[] yCoordinates = {0, 20,20};
+        double notExpectedAngle = Math.PI/2;
+        //an invalid vertex is used and therefore should not give same results as valid test
+        double angle= Geometry.calculateAngle(xCoordinates[0],yCoordinates[0],xCoordinates[1],yCoordinates[1],xCoordinates[2],yCoordinates[2]);
+
+        assertNotEquals(notExpectedAngle,angle ,0.0000000001f);
+
+    }
 }
