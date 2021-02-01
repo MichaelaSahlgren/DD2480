@@ -168,4 +168,59 @@ class ConditionsMetVectorTest {
         assertFalse(controller.calculateRule7(xCoords,yCoords,parameters.K_PTS,parameters.LENGTH1));
 
     }
+
+    @Test
+    @DisplayName("LIC #14 tests")
+    void licFourteenTest() {
+        parameters.E_PTS = 1;
+        parameters.F_PTS = 1;
+        parameters.AREA1 = 1;
+        parameters.AREA2 = 5;
+
+        //true Test cases
+        //returns true when one triangle meets the conditions for LIC14
+        double[] xCoords = {0, 1, 2, 5, 0};
+        double[] yCoords = {0, 0, 0, 0, 2};
+
+        assertTrue(controller.calculateRule14(xCoords, yCoords, parameters.E_PTS, parameters.F_PTS, parameters.AREA1, parameters.AREA2));
+
+        //returns true when more than one triangle meets the conditions for LIC14
+        xCoords = new double[] {1, 0, 2, 5, 0, 0};
+        yCoords = new double[] {0, 0, 0, 0, 2, 5};
+
+        assertTrue(controller.calculateRule14(xCoords, yCoords, parameters.E_PTS, parameters.F_PTS, parameters.AREA1, parameters.AREA2));
+
+        //false TEST cases
+        //returns false when there aren't the same number of x-coordinates and y-coordinates
+        xCoords = new double[] {1,2};
+        yCoords = new double[] {1};
+
+        assertFalse(controller.calculateRule14(xCoords, yCoords, parameters.E_PTS, parameters.F_PTS, parameters.AREA1, parameters.AREA2));
+
+        //returns false when xCoords.length < 5 (or yCoords.length < 5)
+        xCoords = new double[] {1};
+        yCoords = new double[] {1};
+
+        assertFalse(controller.calculateRule14(xCoords, yCoords, parameters.E_PTS, parameters.F_PTS, parameters.AREA1, parameters.AREA2));
+
+        //returns false when the first condition for LIC14 isn't met
+        xCoords = new double[] {0, 0, 1, 0, 0};
+        yCoords = new double[] {0, 0, 0, 2, 1};
+
+        assertFalse(controller.calculateRule14(xCoords, yCoords, parameters.E_PTS, parameters.F_PTS, parameters.AREA1, parameters.AREA2));
+
+
+        //returns false when the second condition for LIC14 isn't met
+        xCoords = new double[] {1, 0, 5, 0, 1};
+        yCoords = new double[] {1, 0, 1, 2, 5};
+
+        assertFalse(controller.calculateRule14(xCoords, yCoords, parameters.E_PTS, parameters.F_PTS, parameters.AREA1, parameters.AREA2));
+
+        //returns false when area = 0
+        xCoords = new double[] {0, 0, 0, 0, 0};
+        yCoords = new double[] {0, 0, 0, 0, 0};
+
+        assertFalse(controller.calculateRule14(xCoords, yCoords, parameters.E_PTS, parameters.F_PTS, parameters.AREA1, parameters.AREA2));
+        
+    }
 }

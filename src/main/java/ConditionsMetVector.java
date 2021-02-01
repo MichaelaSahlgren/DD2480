@@ -153,6 +153,42 @@ public class ConditionsMetVector {
 
     public boolean calculateRule14(double[] xCoordinates, double[] yCoordinates, int E_PTS, int F_PTS, double AREA1, double AREA2) {
         //issue#16
+
+        //check special cases
+        if(xCoordinates.length != yCoordinates.length) return false;
+        if(xCoordinates.length<5) return false;
+
+        double p1x = 0;//point 1
+        double p1y = 0;
+        double p2x = 0;//point 2
+        double p2y = 0;
+        double p3x = 0;//point 3
+        double p3y = 0;
+        double area = 0;
+        boolean[] conditions = new boolean[2];
+
+        for(int i = 0; i<xCoordinates.length-(E_PTS+F_PTS)-2; i++){
+            p1x = xCoordinates[i];
+            p1y = yCoordinates[i];
+
+            p2x = xCoordinates[i+E_PTS+1];
+            p2y = yCoordinates[i+E_PTS+1];
+
+            p3x = xCoordinates[i+E_PTS+F_PTS+2];
+            p3y = yCoordinates[i+E_PTS+F_PTS+2];
+
+            area = Math.abs((p1x*(p2y - p3y) + p2x*(p3y - p1y) + p3x*(p1y - p2y)) / 2);//Geometry.calculateTriangleArea();
+
+            if(area > AREA1){
+                conditions[0] = true;
+            }
+            if(area > 0 && area < AREA2){
+                conditions[1] = true;
+            }
+        }
+
+        if(conditions[0] && conditions[1]) return true;
+
         return false;
     }
 
