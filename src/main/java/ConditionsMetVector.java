@@ -1,6 +1,15 @@
 public class ConditionsMetVector {
     public boolean calculateRule0(double[] xCoordinates, double[] yCoordinates, double LENGTH1) {
-        //issue#2
+        for(int i = 0; i < xCoordinates.length - 1; i++){
+            if(Geometry.calculateDistance(
+                xCoordinates[i],
+                yCoordinates[i],
+                xCoordinates[i + 1],
+                yCoordinates[i + 1]
+            ) > LENGTH1){
+                return true;
+            }
+        }
         return false;
     }
 
@@ -65,17 +74,18 @@ public class ConditionsMetVector {
     }
 
 
-    public boolean calculateRule4(double[] xCoordinates, double[] yCoordinates, int Q_PTS) {
+    public boolean calculateRule4(double[] xCoordinates, double[] yCoordinates, int Q_PTS, int QUADS) {
       //issue#6
 
       //check special cases
-      if(xCoordinates.length < Q_PTS && Q_PTS>0) return false;
+      if(xCoordinates.length < Q_PTS || yCoordinates.length < Q_PTS) return false;
+      if(QUADS < 1 || QUADS > 3) return false;
 
-      //iterate over all datapoints
-      for(int i = 0; i<(xCoordinates.length-1)-Q_PTS; i++){
+      //iterate over all data points
+      for(int i = 0; i<(xCoordinates.length)-Q_PTS+1; i++){
 
         //check all subset of length Q_PTS
-        boolean visitedQuads = new boolean[4];//visited QUADS
+        boolean[] visitedQuads = new boolean[4];//visited QUADS
         for(int j = i; j<i+Q_PTS; j++){
           //check which quadrant the point is in
           if(xCoordinates[j] >= 0){
@@ -97,16 +107,20 @@ public class ConditionsMetVector {
 
         //check if 1 ≤ QUADS ≤ 3 is visited, if true subset found - terminate
         int count = 0;
-        for(int k = 0; k<visitedQuads.length;k++){
-          if(visitedQuads[k]==true) count++;
+        for (boolean visitedQuad : visitedQuads) {
+            if (visitedQuad) count++;
         }
-        if(count>=1 && count<=3) return true;
+        if(count == QUADS) return true;
       }
       return false;
     }
 
     public boolean calculateRule5(double[] xCoordinates, double[] yCoordinates) {
-        //issue#7
+        for(int j = 1; j < xCoordinates.length; j++){
+            if(xCoordinates[j] - xCoordinates[j - 1] < 0){
+                return true;
+            }
+        }
         return false;
     }
 
