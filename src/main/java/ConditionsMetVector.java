@@ -64,7 +64,11 @@ public class ConditionsMetVector {
     }
 
     public boolean calculateRule5(double[] xCoordinates, double[] yCoordinates) {
-        //issue#7
+        for(int j = 1; j < xCoordinates.length; j++){
+            if(xCoordinates[j] - xCoordinates[j - 1] < 0){
+                return true;
+            }
+        }
         return false;
     }
 
