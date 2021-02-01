@@ -168,4 +168,75 @@ class ConditionsMetVectorTest {
         assertFalse(controller.calculateRule7(xCoords,yCoords,parameters.K_PTS,parameters.LENGTH1));
 
     }
+
+    @Test
+    @DisplayName("LIC #12 Valid test")
+    void licTwelveTestValid() {
+
+        parameters.LENGTH1=3;
+        parameters.LENGTH2=7;
+        parameters.K_PTS=2;
+
+        double[] xCoords = {1, -1, 0, 5, 1};
+        double[] yCoords = {2, -2, 0, 8, 2};
+
+        //should return true as there is a valid LIC12 condition match
+        assertTrue(controller.calculateRule12(xCoords,yCoords,parameters.K_PTS,parameters.LENGTH1,parameters.LENGTH2));
+
+        parameters.K_PTS=1;
+        parameters.LENGTH2=10;
+        xCoords = new double[]{1, 1, 5};
+        yCoords = new double[]{1, 1, 8};
+        //should return true as there is a valid LIC12 condition match
+        assertTrue(controller.calculateRule12(xCoords,yCoords,parameters.K_PTS,parameters.LENGTH1,parameters.LENGTH2));
+
+        //should return false as there are no sets of points with K-points in between them with distance>Length1
+        xCoords = new double[]{1, 1, -1};
+        yCoords = new double[]{1, 1, -1};
+
+        assertFalse(controller.calculateRule12(xCoords,yCoords,parameters.K_PTS,parameters.LENGTH1,parameters.LENGTH2));
+
+        parameters.LENGTH2=0.5;
+        //should return false as condition2 is never fullfilled
+         xCoords = new double[]{1, -1, 0, 5, 1};
+         yCoords = new double[]{2, -2, 0, 8, 2};
+
+        assertFalse(controller.calculateRule12(xCoords,yCoords,parameters.K_PTS,parameters.LENGTH1,parameters.LENGTH2));
+
+        parameters.LENGTH1=10;
+        //should return false as condition1 is never fullfilled
+        xCoords = new double[]{1, -1, 0, 5, 1};
+        yCoords = new double[]{2, -2, 0, 8, 2};
+
+        assertFalse(controller.calculateRule12(xCoords,yCoords,parameters.K_PTS,parameters.LENGTH1,parameters.LENGTH2));
+
+
+    }
+
+    @Test
+    @DisplayName("LIC #12 InvalidInputs")
+    void licTwelveTestInvalidInputs() {
+
+        parameters.LENGTH1=3;
+        parameters.LENGTH2=10;
+        parameters.K_PTS=0;
+
+        double[] xCoords = {1, -5};
+        double[] yCoords = {2, -5};
+        //should return false as the input is invalid.. NUMPOINTS is less than 3
+        assertFalse(controller.calculateRule12(xCoords,yCoords,parameters.K_PTS,parameters.LENGTH1,parameters.LENGTH2));
+
+        parameters.K_PTS=3;
+        xCoords = new double[]{1, 1,5, -1};
+        yCoords = new double[]{1, 1,6,-1};
+        //should return false as K_PTS> NUMPOINTS-2
+        assertFalse(controller.calculateRule12(xCoords,yCoords,parameters.K_PTS,parameters.LENGTH1,parameters.LENGTH2));
+
+        parameters.LENGTH2=-2;
+        xCoords = new double[]{1, -1, 0, 5, 1};
+        yCoords = new double[]{2, -2, 0, 8, 2};
+        //should return false as Length2 is negative
+        assertFalse(controller.calculateRule12(xCoords,yCoords,parameters.K_PTS,parameters.LENGTH1,parameters.LENGTH2));
+
+    }
 }
