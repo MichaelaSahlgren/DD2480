@@ -14,4 +14,7 @@ public class Geometry{
     return Math.acos((sideA * sideA + sideB * sideB - sideC * sideC)/(2.0 * sideA * sideB));
   }
 
+  public static double calculateTriangleArea(double x1, double y1, double x2, double y2, double x3, double y3) {
+    return Math.abs((x1*(y2 - y3) + x2*(y3 - y1) + x3*(y1 - y2)) / 2);
+  }
 }
