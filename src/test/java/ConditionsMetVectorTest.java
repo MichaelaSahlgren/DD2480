@@ -16,6 +16,27 @@ class ConditionsMetVectorTest {
     }
 
     @Test
+    @DisplayName("LIC #1 tests")
+    void licOneTestValid() {
+
+      // True test
+      parameters.RADIUS1 = 2.3;
+
+      double[] xCoords = {2, 5, 0};
+      double[] yCoords = {4, 1, 1};
+
+      Boolean trueTest = controller.calculateRule1(xCoords,yCoords,parameters.RADIUS1);
+      assertTrue(trueTest);
+
+      // False test
+      parameters.RADIUS1 = 2.85;
+
+      Boolean falseTest = controller.calculateRule1(xCoords,yCoords,parameters.RADIUS1);
+      assertFalse(falseTest);
+    }
+
+
+    @Test
     @DisplayName("LIC #2 tests")
     void licTwoTestValid() {
 

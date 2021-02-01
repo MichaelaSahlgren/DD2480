@@ -1,3 +1,5 @@
+import java.lang.Math;
+
 public class ConditionsMetVector {
     public boolean calculateRule0(double[] xCoordinates, double[] yCoordinates, double LENGTH1) {
         //issue#2
@@ -5,21 +7,55 @@ public class ConditionsMetVector {
     }
 
     public boolean calculateRule1(double[] xCoordinates, double[] yCoordinates, double RADIUS1) {
-        //issue#3
-        return false;
+      //issue#3
+      double x1;
+      double y1;
+      double x2;
+      double y2;
+      double x3;
+      double y3;
+      double centerX;
+      double centerY;
+      double dist1Center;
+      double dist2Center;
+      double dist3Center;
+
+      //Loop over all consecutive sets of 3 points to see if any of the sets has
+      //points outside RADIUS1
+      for (int i = 0; i < xCoordinates.length-2; i++) {
+        x1 = xCoordinates[i];
+        y1 = yCoordinates[i];
+        x2 = xCoordinates[i+1];
+        y2 = yCoordinates[i+1];
+        x3 = xCoordinates[i+2];
+        y3 = yCoordinates[i+2];
+
+        //Get center of triangle and circle
+        centerX = (x1+x2+x3)/3;
+        centerY = (y1+y2+y3)/3;
+
+        //Calculate distance from center to point
+        dist1Center = Geometry.calculateDistance(x1, y1, centerX, centerY);
+        dist2Center = Geometry.calculateDistance(x2, y2, centerX, centerY);
+        dist3Center = Geometry.calculateDistance(x3, y3, centerX, centerY);
+
+        //Condition met if any distance from point to center is greater than RADIUS
+        if (dist1Center > RADIUS1 || dist2Center > RADIUS1 || dist3Center > RADIUS1) return true;
+      }
+      return false;
     }
 
     public boolean calculateRule2(double[] xCoordinates, double[] yCoordinates, double EPSILON) {
         //issue#4
-        
+
         //point 1
         double p1x = 0;
         double p1y = 0;
-        
+
         //point 2
         double p2x = 0;
         double p2y = 0;
-        
+
         //point 3
         double p3x = 0;
         double p3y = 0;
@@ -49,7 +85,7 @@ public class ConditionsMetVector {
 
             //amgle using (p2x,p2y) as the vertex
             angle = Geometry.calculateAngle(p2x, p2y, p1x, p1y, p3x, p3y);
-            
+
             if (angle < (Math.PI - EPSILON) || angle > (Math.PI + EPSILON)) {
                 return true;
             }
