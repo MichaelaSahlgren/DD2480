@@ -93,7 +93,18 @@ public class ConditionsMetVector {
     }
 
     public boolean calculateRule10(double[] xCoordinates, double[] yCoordinates, int E_PTS, int F_PTS, double AREA1) {
-        //issue#12
+        for(int i = 0; i < xCoordinates.length - E_PTS - F_PTS - 2; i++){
+            if(Geometry.calculateTriangleArea(
+                xCoordinates[i],
+                yCoordinates[i],
+                xCoordinates[i + E_PTS + 1],
+                yCoordinates[i + E_PTS + 1],
+                xCoordinates[i + E_PTS + F_PTS + 2],
+                yCoordinates[i + E_PTS + F_PTS + 2]
+            ) > AREA1){
+                return true;
+            }
+        }
         return false;
     }
 
