@@ -56,4 +56,45 @@ class ConditionsMetVectorTest {
 
     }
 
+    @Test
+    @DisplayName("LIC #9 tests")
+    void licNineTestValid() {
+      parameters.EPSILON = 1;
+      C_PTS = 1; //one to minimize data needed to test
+      D_PTS = 1;
+
+      //true TEST cases
+      //Testing angle < pi - epsilon
+      xCoords = new double[]{1, 0, 0};
+      yCoords = new double[]{1, 0, 1};
+      Boolean falseTest = controller.calculateRule9(xCoords, yCoords, C_PTS, D_PTS, parameters.EPSILON);
+      assertTrue(trueTest)
+
+      //Testing angle > pi + epsilon
+      xCoords = new double[]{-4, 0, 0};
+      yCoords = new double[]{-4, 0, 1};
+      Boolean falseTest = controller.calculateRule9(xCoords, yCoords, C_PTS, D_PTS, parameters.EPSILON);
+      assertTrue(trueTest)
+
+      //false TEST cases
+      //Testing angle does not meet condition
+      xCoords = new double[]{0, 0, 0};
+      yCoords = new double[]{4, 0, -4};
+      Boolean falseTest = controller.calculateRule9(xCoords, yCoords, C_PTS, D_PTS, parameters.EPSILON);
+      assertTrue(trueTest)
+
+      //Testing too few points
+      xCoords = new double[]{1, -1};
+      yCoords = new double[]{1, -2};
+      Boolean falseTest = controller.calculateRule9(xCoords, yCoords, C_PTS, D_PTS, parameters.EPSILON);
+      assertFalse(falseTest);
+
+      //Testing if the points coincide, they should be ignored --> return false
+      xCoords = new double[]{1, 1, -3};
+      yCoords = new double[]{1, 1, -3};
+      falseTest = controller.calculateRule9(xCoords, yCoords, C_PTS, D_PTS, parameters.EPSILON);
+      assertFalse(falseTest);
+
+    }
+
 }

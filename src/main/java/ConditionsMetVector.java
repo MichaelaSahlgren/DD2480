@@ -127,6 +127,36 @@ public class ConditionsMetVector {
 
     public boolean calculateRule9(double[] xCoordinates, double[] yCoordinates, int C_PTS, int D_PTS, double EPSILON) {
         //issue#11
+
+        //check special cases
+        if(xCoordinates.length<5 || yCoordinates.length<5) return false;
+
+        double p1x = 0;//point 1
+        double p1y = 0;
+        double p2x = 0;//point 2
+        double p2y = 0;
+        double p3x = 0;//point 3
+        double p3y = 0;
+        double angle = 0;
+
+        for(int i = 0; i<xCoordinates.length-1-(C_PTS+D_PTS); i++){
+          p1x = xCoordinates[i];
+          p1y = yCoordinates[i];
+
+          p2x = xCoordinates[i+C_PTS];
+          p2y = yCoordinates[i+C_PTS];
+
+          p3x = xCoordinates[i+C_PTS+D_PTS];
+          p3y = yCoordinates[i+C_PTS+D_PTS];
+
+          //if point 1 or 3 coincides with the vertex (p2) then skip!
+          if (p1x == p2x && p1y == p2y || p3x == p2x && p3y == p2y)
+              continue;
+
+          angle = Geometry.calculateAngle(p2x,p2y,p1x,p1y,p3x,p3y);
+          if (angle < Math.PI-EPSILON || angle > Math.PI+EPSILON) return true;
+        }
+
         return false;
     }
 
