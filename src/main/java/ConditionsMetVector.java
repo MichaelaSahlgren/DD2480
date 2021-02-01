@@ -1,6 +1,15 @@
 public class ConditionsMetVector {
     public boolean calculateRule0(double[] xCoordinates, double[] yCoordinates, double LENGTH1) {
-        //issue#2
+        for(int i = 0; i < xCoordinates.length - 1; i++){
+            if(Geometry.calculateDistance(
+                xCoordinates[i],
+                yCoordinates[i],
+                xCoordinates[i + 1],
+                yCoordinates[i + 1]
+            ) > LENGTH1){
+                return true;
+            }
+        }
         return false;
     }
 
