@@ -67,41 +67,6 @@ public class ConditionsMetVector {
 
     public boolean calculateRule4(double[] xCoordinates, double[] yCoordinates, int Q_PTS) {
       //issue#6
-
-      //check special cases
-      if(xCoordinates.length < Q_PTS && Q_PTS>0) return false;
-
-      //iterate over all datapoints
-      for(int i = 0; i<(xCoordinates.length-1)-Q_PTS; i++){
-
-        //check all subset of length Q_PTS
-        boolean visitedQuads = new boolean[4];//visited QUADS
-        for(int j = i; j<i+Q_PTS; j++){
-          //check which quadrant the point is in
-          if(xCoordinates[j] >= 0){
-            if(yCoordinates[j] >= 0){
-              visitedQuads[0] = true;
-            }else if(xCoordinates[j]==0 && yCoordinates[j]<0){ //the point lies on the negative y-axis
-              visitedQuads[2] = true;
-            }else{
-              visitedQuads[3] = true;
-            }
-          }else{
-            if(yCoordinates[j] >= 0){
-              visitedQuads[1] = true;
-            }else{
-              visitedQuads[2] = true;
-            }
-          }
-        }
-
-        //check if 1 ≤ QUADS ≤ 3 is visited, if true subset found - terminate
-        int count = 0;
-        for(int k = 0; k<visitedQuads.length;k++){
-          if(visitedQuads[k]==true) count++;
-        }
-        if(count>=1 && count<=3) return true;
-      }
       return false;
     }
 
