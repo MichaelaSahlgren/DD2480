@@ -32,7 +32,7 @@ public class Decide {
         return launch;
     }
 
-    public Boolean evaluateFUV(boolean[] fuv) {
+    public boolean evaluateFUV(boolean[] fuv) {
         for (boolean fuvValue : fuv) {
             if (!fuvValue) return false;
         }
