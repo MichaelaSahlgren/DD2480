@@ -102,4 +102,20 @@ class ConditionsMetVectorTest {
 
     }
 
+    @Test
+    @DisplayName("LIC #5 returns true when there exist two consecutive data points where the second xCoordinate is less than the first one")
+    void licFiveReturnsTrueWhenAllXCoordinatesAreNotIncreasing(){
+        double[] xCoordinates = {1, 3, 3, 5, -3, 12};
+        double[] yCoordinates = {1, 3, 0, 10, 12, 12};
+
+        assertTrue(controller.calculateRule5(xCoordinates, yCoordinates));
+    }
+    @Test
+    @DisplayName("LIC #5 returns false when there does not exist two consecutive data points where the second xCoordinate is less than the first one")
+    void licFiveReturnsFalseWhenAllXCoordinatesAreIncreasing(){
+        double[] xCoordinates = {1, 3, 3, 5, 7, 10};
+        double[] yCoordinates = {1, 3, 0, 10, 12, 12};
+
+        assertFalse(controller.calculateRule5(xCoordinates, yCoordinates));
+    }
 }
