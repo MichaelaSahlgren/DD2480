@@ -350,10 +350,10 @@ class ConditionsMetVectorTest {
         parameters.B_PTS = 1;
         parameters.RADIUS1 = 1;
 
-        double[] xCoords = {0, 0, 0, 0, 0};
-        double[] yCoords = {1, 1, 1, 1, 1};
+        double[] xCoords2 = {0, 0, 0, 0, 0};
+        double[] yCoords2 = {1, 1, 1, 1, 1};
         //should return false as the input is invalid.. A_PTS is too small
-        assertFalse(controller.calculateRule8(xCoords, yCoords, parameters.A_PTS, parameters.B_PTS, parameters.RADIUS1));
+        assertFalse(controller.calculateRule8(xCoords2, yCoords2, parameters.A_PTS, parameters.B_PTS, parameters.RADIUS1));
     }
 
     @Test

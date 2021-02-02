@@ -28,6 +28,13 @@ public class Geometry{
   }
 
   public static boolean checkIfPointsFitInCircle(double x1, double y1, double x2, double y2, double x3, double y3, double radius) {
+    double dist12;
+    double dist13;
+    double dist23;
+    double semiParameter;
+    double triangleArea;
+    double circumradius;
+
     dist12 = Geometry.calculateDistance(x1, y1, x2, y2);
     dist13 = Geometry.calculateDistance(x1, y1, x3, y3);
     dist23 = Geometry.calculateDistance(x2, y2, x3, y3);

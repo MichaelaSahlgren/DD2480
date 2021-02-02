@@ -25,12 +25,6 @@ public class ConditionsMetVector {
       double y2;
       double x3;
       double y3;
-      double dist12;
-      double dist13;
-      double dist23;
-      double semiParameter;
-      double triangleArea;
-      double circumradius;
 
       if (RADIUS1 < 0 || xCoordinates.length < 0 || yCoordinates.length < 0) return false;
 
@@ -44,7 +38,7 @@ public class ConditionsMetVector {
         x3 = xCoordinates[i+2];
         y3 = yCoordinates[i+2];
 
-        if !(Geometry.pointsFitInCircle(x1, y1, x2, y2, x3, y3, RADIUS1)) {
+        if (!(Geometry.checkIfPointsFitInCircle(x1, y1, x2, y2, x3, y3, RADIUS1))) {
           return true;
         }
       }

@@ -70,7 +70,7 @@ class GeometryTests {
         double[] xCoordinates = {0, 0, 1};
         double[] yCoordinates = {0, 1, 1};
         //these three points should fit inside a circle of radius 3
-        boolean fits = Geometry.pointsFitInCircle(xCoordinates[0], yCoordinates[0], xCoordinates[1], yCoordinates[1], xCoordinates[2], yCoordinates[2], 3);
+        boolean fits = Geometry.checkIfPointsFitInCircle(xCoordinates[0], yCoordinates[0], xCoordinates[1], yCoordinates[1], xCoordinates[2], yCoordinates[2], 3);
 
         assertTrue(fits);
     }
@@ -80,8 +80,8 @@ class GeometryTests {
     void calculatePointsFitInsideCircleFalse() {
         double[] xCoordinates = {0, 0, 1};
         double[] yCoordinates = {0, 1, 1};
-        //these three points should not fit inside a circle of radius 1
-        boolean fits = Geometry.pointsFitInCircle(xCoordinates[0], yCoordinates[0], xCoordinates[1], yCoordinates[1], xCoordinates[2], yCoordinates[2], 1);
+        //these three points should not fit inside a circle of radius 0.5
+        boolean fits = Geometry.checkIfPointsFitInCircle(xCoordinates[0], yCoordinates[0], xCoordinates[1], yCoordinates[1], xCoordinates[2], yCoordinates[2], 0.5);
 
         assertFalse(fits);
     }
