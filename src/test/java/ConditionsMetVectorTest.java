@@ -122,42 +122,39 @@ class ConditionsMetVectorTest {
     @DisplayName("LIC #9 tests")
     void licNineTestValid() {
       parameters.EPSILON = 1;
-      int C_PTS = 1; //one to minimize data needed to test
-      int D_PTS = 1;
+      parameters.C_PTS = 1; //one to minimize data needed to test
+      parameters.D_PTS = 1;
       double[] xCoords = {};
       double[] yCoords = {};
 
       //true TEST cases
-        //Testing angle < pi - epsilon
+        //returns false when the angle meets the condition angle < pi - epsilon in LIC9
         xCoords = new double[]{1, 1, 0, 2, 0};
         yCoords = new double[]{1, 1, 0, 2, 1};
-        boolean trueTest = controller.calculateRule9(xCoords, yCoords, C_PTS, D_PTS, parameters.EPSILON);
-        assertTrue(trueTest);
+        assertTrue(controller.calculateRule9(xCoords, yCoords, parameters.C_PTS, parameters.D_PTS, parameters.EPSILON));
 
-        //Testing angle > pi + epsilon
-        xCoords = new double[]{-4, 1, 0, 2, 0};
-        yCoords = new double[]{-4, 1, 0, 2, 1};
-        trueTest = controller.calculateRule9(xCoords, yCoords, C_PTS, D_PTS, parameters.EPSILON);
-        assertTrue(trueTest);
+        //returns true when the angle meets the condition angle > pi + epsilon in LIC9
+        parameters.EPSILON = 0;
+        xCoords = new double[]{4, 1, 0, 2, -4};
+        yCoords = new double[]{0, 1, 0, 2, -2};
+        assertTrue(controller.calculateRule9(xCoords, yCoords, parameters.C_PTS, parameters.D_PTS, parameters.EPSILON));
 
-        //false TEST cases
-        //Testing angle does not meet condition
+      //false TEST cases
+        //returns false when the angle does not meet the conditions of LIC9
+        parameters.EPSILON = 1;
         xCoords = new double[]{0, 1, 0, 2, 0};
         yCoords = new double[]{4, 1, 0, 2, -4};
-        boolean falseTest = controller.calculateRule9(xCoords, yCoords, C_PTS, D_PTS, parameters.EPSILON);
-        assertTrue(falseTest);
+        assertFalse(controller.calculateRule9(xCoords, yCoords, parameters.C_PTS, parameters.D_PTS, parameters.EPSILON));
 
-        //Testing too few points
+        //returns false when there are too few vertices
         xCoords = new double[]{1, -1};
         yCoords = new double[]{1, -2};
-        falseTest = controller.calculateRule9(xCoords, yCoords, C_PTS, D_PTS, parameters.EPSILON);
-        assertFalse(falseTest);
+        assertFalse(controller.calculateRule9(xCoords, yCoords, parameters.C_PTS, parameters.D_PTS, parameters.EPSILON));
 
-        //Testing if the points coincide, they should be ignored --> return false
-        xCoords = new double[]{1, 1, -3};
-        yCoords = new double[]{1, 1, -3};
-        falseTest = controller.calculateRule9(xCoords, yCoords, C_PTS, D_PTS, parameters.EPSILON);
-        assertFalse(falseTest);
+        //returns false when any of the three vertices are the same
+        xCoords = new double[]{1, 0, 1, 1, -1, 1};
+        yCoords = new double[]{1, 0, 1, 1, -1, 1};
+        assertFalse(controller.calculateRule9(xCoords, yCoords, parameters.C_PTS, parameters.D_PTS, parameters.EPSILON));
 
     }
 }
