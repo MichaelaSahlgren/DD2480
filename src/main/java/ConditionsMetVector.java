@@ -115,7 +115,21 @@ public class ConditionsMetVector {
     }
 
     public boolean calculateRule3(double[] xCoordinates, double[] yCoordinates, double AREA1) {
-        //issue#5
+      if(xCoordinates.length < 3){
+        return false;
+      }
+      for (int i = 0; i < (xCoordinates.length - 2); i++) {
+        double x1 = xCoordinates[i];
+        double y1 = yCoordinates[i];
+        double x2 = xCoordinates[i+1];
+        double y2 = yCoordinates[i+1];
+        double x3 = xCoordinates[i+2];
+        double y3 = yCoordinates[i+2];
+        double triangleArea = Geometry.calculateTriangleArea(x1, y1, x2, y2, x3, y3);
+        if(triangleArea>AREA1){
+          return true;
+        }
+      }
         return false;
     }
 
