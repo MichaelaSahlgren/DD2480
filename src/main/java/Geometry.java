@@ -14,19 +14,6 @@ public class Geometry{
     return Math.acos(((sideA * sideA) + (sideB * sideB) - (sideC * sideC))/(2.0 * sideA * sideB));
   }
 
-  public static double calculateLargeAngle(double vertexX, double vertexY,double x1, double y1, double x2, double y2){
-    //solved using Law of cosines where side a and b come from the vertex point
-    double sideA= Geometry.calculateDistance(vertexX,vertexY,x1,y1);
-    double sideB= Geometry.calculateDistance(vertexX,vertexY,x2,y2);
-    double sideC= Geometry.calculateDistance(x1,y1,x2,y2);
-
-    double top =(sideA * sideA) + (sideB * sideB) - (sideC * sideC);
-    if (top < 0){
-      return (2*Math.PI) - Math.acos(((sideA * sideA) + (sideB * sideB) - (sideC * sideC))/(2.0 * sideA * sideB));
-    }
-    return Math.acos(((sideA * sideA) + (sideB * sideB) - (sideC * sideC))/(2.0 * sideA * sideB));
-  }
-
   public static double calculateTriangleArea(double x1, double y1, double x2, double y2, double x3, double y3){
     double vertexX = x2;
     double vertexY = y2;
