@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 
 class ConditionsMetVectorTest {
     ConditionsMetVector controller;
@@ -392,7 +393,7 @@ class ConditionsMetVectorTest {
         yCoords = new double[]{1, 0, 1, 1, -1, 1};
         assertFalse(controller.calculateRule9(xCoords, yCoords, parameters.C_PTS, parameters.D_PTS, parameters.EPSILON));
     }
-  
+
     @Test
     @DisplayName("LIC #10 valid tests")
     void licTenTestValid(){
@@ -541,4 +542,163 @@ class ConditionsMetVectorTest {
         //should return false as Length2 is negative
         assertFalse(controller.calculateRule12(xCoords,yCoords,parameters.K_PTS,parameters.LENGTH1,parameters.LENGTH2));
     }
+
+    @Test
+    @DisplayName("Createcmv all false ok")
+    void cmvAllFalseTest() {
+      double[] xCoordinates = {1, 1, 1};
+      double[] yCoordinates = {2, 2, 2};
+      parameters.LENGTH1 = 0;
+      parameters.RADIUS1 = 0;
+      parameters.EPSILON = 0;
+      parameters.AREA1 = 0;
+      parameters.Q_PTS = 0;
+      parameters.QUADS = 0;
+      parameters.DIST = 0;
+      parameters.N_PTS = 0;
+      parameters.K_PTS = 0;
+      parameters.A_PTS = 0;
+      parameters.B_PTS = 0;
+      parameters.C_PTS = 0;
+      parameters.D_PTS = 0;
+      parameters.E_PTS = 0;
+      parameters.F_PTS = 0;
+      parameters.G_PTS = 0;
+      parameters.LENGTH2 = 0;
+      parameters.RADIUS2 = 0;
+      parameters.AREA2 = 0;
+
+      boolean[] cmv = new boolean[15];
+
+      controller.createCmv(xCoordinates, yCoordinates, parameters, cmv);
+
+      boolean[] cmvCorrect = {false, false, false, false, false, false, false, false, false, false, false, false, false, false, false};
+
+      assertArrayEquals(cmv, cmvCorrect);
+    }
+
+
+    @Test
+    @DisplayName("All true ok when creating cmv[0] with createCmv")
+    void cmv0WithCreateCmvAllTrueTest() {
+      boolean[] cmv = new boolean[15];
+      boolean[] cmvCorrect = {true, true, true, true, true, true, true, true, true, true, true, true, true, true, true};
+
+      // Ok when creating cmv[0] with createCmv
+      parameters.LENGTH1 = 10;
+      double[] xCoordinates = {1, 3, 3, 5, -3};
+      double[] yCoordinates = {1, 3, 0, 10, 12};
+      controller.createCmv(xCoordinates, yCoordinates, parameters, cmv);
+      cmv[1] = true;
+      cmv[2] = true;
+      cmv[3] = true;
+      cmv[4] = true;
+      cmv[5] = true;
+      cmv[6] = true;
+      cmv[7] = true;
+      cmv[8] = true;
+      cmv[9] = true;
+      cmv[10] = true;
+      cmv[11] = true;
+      cmv[12] = true;
+      cmv[13] = true;
+      cmv[14] = true;
+
+      assertArrayEquals(cmv, cmvCorrect);
+    }
+
+    @Test
+    @DisplayName("All true ok when creating cmv[4] with createCmv")
+    void cmv4WithCreateCmvAllTrueTest() {
+      boolean[] cmv = new boolean[15];
+      boolean[] cmvCorrect = {true, true, true, true, true, true, true, true, true, true, true, true, true, true, true};
+
+      // Ok when creating cmv[4] with createCmv
+      parameters.Q_PTS = 2;
+      parameters.QUADS = 2;
+      double[] xCoordinates = {1, -1, 1, -1, 1};
+      double[] yCoordinates = {1, 1, 0, -2, 2};
+      controller.createCmv(xCoordinates, yCoordinates, parameters, cmv);
+      cmv[0] = true;
+      cmv[1] = true;
+      cmv[2] = true;
+      cmv[3] = true;
+
+      cmv[5] = true;
+      cmv[6] = true;
+      cmv[7] = true;
+      cmv[8] = true;
+      cmv[9] = true;
+      cmv[10] = true;
+      cmv[11] = true;
+      cmv[12] = true;
+      cmv[13] = true;
+      cmv[14] = true;
+
+      assertArrayEquals(cmv, cmvCorrect);
+    }
+
+    @Test
+    @DisplayName("All true ok when creating cmv[7] with createCmv")
+    void cmv7WithCreateCmvAllTrueTest() {
+      boolean[] cmv = new boolean[15];
+      boolean[] cmvCorrect = {true, true, true, true, true, true, true, true, true, true, true, true, true, true, true};
+
+      // Ok when creating cmv[7]
+      parameters.LENGTH1 = 3;
+      parameters.K_PTS = 1;
+      double[] xCoordinates = {1, 1, 5};
+      double[] yCoordinates = {1, 1, 8};
+      controller.createCmv(xCoordinates, yCoordinates, parameters, cmv);
+      cmv[0] = true;
+      cmv[1] = true;
+      cmv[2] = true;
+      cmv[3] = true;
+      cmv[4] = true;
+      cmv[5] = true;
+      cmv[6] = true;
+
+      cmv[8] = true;
+      cmv[9] = true;
+      cmv[10] = true;
+      cmv[11] = true;
+      cmv[12] = true;
+      cmv[13] = true;
+      cmv[14] = true;
+
+      assertArrayEquals(cmv, cmvCorrect);
+    }
+
+    @Test
+    @DisplayName("All true ok when creating cmv[10] with createCmv")
+    void cmv10WithCreateCmvAllTrueTest() {
+      boolean[] cmv = new boolean[15];
+      boolean[] cmvCorrect = {true, true, true, true, true, true, true, true, true, true, true, true, true, true, true};
+
+      // creating cmv[10] with createCmv
+      parameters.E_PTS = 2;
+      parameters.F_PTS = 3;
+      parameters.AREA1 = 8;
+      double[] xCoordinates = {1, 3, 3, 4,  7,  10, 0, -2};
+      double[] yCoordinates = {1, 3, 0, 10, 12, 12, 0, -2};
+      controller.createCmv(xCoordinates, yCoordinates, parameters, cmv);
+      cmv[0] = true;
+      cmv[1] = true;
+      cmv[2] = true;
+      cmv[3] = true;
+      cmv[4] = true;
+      cmv[5] = true;
+      cmv[6] = true;
+      cmv[7] = true;
+      cmv[8] = true;
+      cmv[9] = true;
+
+      cmv[11] = true;
+      cmv[12] = true;
+      cmv[13] = true;
+      cmv[14] = true;
+
+      assertArrayEquals(cmv, cmvCorrect);
+    }
+
 }
