@@ -1,3 +1,6 @@
+import java.lang.Math;
+import java.util.Arrays;
+
 public class ConditionsMetVector {
     public boolean calculateRule0(double[] xCoordinates, double[] yCoordinates, double LENGTH1) {
         //issue#2
@@ -11,15 +14,15 @@ public class ConditionsMetVector {
 
     public boolean calculateRule2(double[] xCoordinates, double[] yCoordinates, double EPSILON) {
         //issue#4
-        
+
         //point 1
         double p1x = 0;
         double p1y = 0;
-        
+
         //point 2
         double p2x = 0;
         double p2y = 0;
-        
+
         //point 3
         double p3x = 0;
         double p3y = 0;
@@ -49,7 +52,7 @@ public class ConditionsMetVector {
 
             //amgle using (p2x,p2y) as the vertex
             angle = Geometry.calculateAngle(p2x, p2y, p1x, p1y, p3x, p3y);
-            
+
             if (angle < (Math.PI - EPSILON) || angle > (Math.PI + EPSILON)) {
                 return true;
             }
@@ -65,8 +68,8 @@ public class ConditionsMetVector {
     }
 
     public boolean calculateRule4(double[] xCoordinates, double[] yCoordinates, int Q_PTS) {
-        //issue#6
-        return false;
+      //issue#6
+      return false;
     }
 
     public boolean calculateRule5(double[] xCoordinates, double[] yCoordinates) {
@@ -76,6 +79,42 @@ public class ConditionsMetVector {
 
     public boolean calculateRule6(double[] xCoordinates, double[] yCoordinates, int N_PTS, double DIST) {
         //issue#8
+        //Condition is not met if N_PTS is less than 3
+        if (N_PTS < 3) return false;
+
+        double distance;
+        double pointX;
+        double pointY;
+        double x1;
+        double x2;
+        double y1;
+        double y2;
+        int i = -1;
+
+        //Loop over all consecutive sets of N_PST points
+        while(i < xCoordinates.length-N_PTS) {
+          i++;
+          x1 = xCoordinates[i];
+          x2 = xCoordinates[i+N_PTS-1];
+          y1 = yCoordinates[i];
+          y2 = yCoordinates[i+N_PTS-1];
+
+          //Check if distance from (pointX, pointY) to the line between
+          //(firstX, firstY) and (lastX, lastY) is greater than DIST
+          for (int j = 1; j < N_PTS; j++) {
+            pointX = xCoordinates[i+j];
+            pointY = yCoordinates[i+j];
+
+            // If the first and last point coinside the distance is to that point
+            if (x1 == x2 && y1 == y2) distance = Geometry.calculateDistance(x1, y1, pointX, pointY);
+
+            // If the first and last point are different the distance is to the line between them
+            else distance = Math.abs((x2-x1)*(y1-pointY)-(x1-pointX)*(y2-y1))/Geometry.calculateDistance(x1, y1, x2, y2);
+
+            //Condition met if the point lays a distance greater than DIST from the line/(point)
+            if (distance > DIST) return true;
+          }
+        }
         return false;
     }
 
