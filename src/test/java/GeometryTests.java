@@ -63,4 +63,31 @@ class GeometryTests {
         assertNotEquals(notExpectedAngle, angle, 0.0000000001f);
 
     }
+
+    @Test
+    @DisplayName("Calculate triangle area normal case")
+    void calculateTriangleAreaNormal() {
+
+        double[] xCoordinates = {0, 1, 0};
+        double[] yCoordinates = {0, 1, 1};
+        double expectedArea = 0.5;
+        double area = Geometry.calculateTriangleArea(xCoordinates[0], yCoordinates[0], xCoordinates[1], yCoordinates[1], xCoordinates[2], yCoordinates[2]);
+
+        assertEquals(expectedArea, area, 0.0000000001f);
+
+    }
+
+    @Test
+    @DisplayName("Calculate triangle area edge case")
+    void calculateTriangleAreaEdgeCase() {
+
+        double[] xCoordinates = {0, 1, 0};
+        double[] yCoordinates = {0, 1, 0};
+        double expectedArea = 0;
+        double area = Geometry.calculateTriangleArea(xCoordinates[0], yCoordinates[0], xCoordinates[1], yCoordinates[1], xCoordinates[2], yCoordinates[2]);
+
+        assertEquals(expectedArea, area, 0.0000000001f);
+
+    }
+
 }
