@@ -1,3 +1,5 @@
+import java.lang.Math;
+
 public class ConditionsMetVector {
     public boolean calculateRule0(double[] xCoordinates, double[] yCoordinates, double LENGTH1) {
         for(int i = 0; i < xCoordinates.length - 1; i++){
@@ -87,9 +89,44 @@ public class ConditionsMetVector {
         return false;
     }
 
-
-    public boolean calculateRule4(double[] xCoordinates, double[] yCoordinates, int Q_PTS) {
+    public boolean calculateRule4(double[] xCoordinates, double[] yCoordinates, int Q_PTS, int QUADS) {
       //issue#6
+
+      //check special cases
+      if(xCoordinates.length < Q_PTS || yCoordinates.length < Q_PTS) return false;
+      if(QUADS < 1 || QUADS > 3) return false;
+
+      //iterate over all data points
+      for(int i = 0; i<(xCoordinates.length)-Q_PTS+1; i++){
+
+        //check all subset of length Q_PTS
+        boolean[] visitedQuads = new boolean[4];//visited QUADS
+        for(int j = i; j<i+Q_PTS; j++){
+          //check which quadrant the point is in
+          if(xCoordinates[j] >= 0){
+            if(yCoordinates[j] >= 0){
+              visitedQuads[0] = true;
+            }else if(xCoordinates[j]==0 && yCoordinates[j]<0){ //the point lies on the negative y-axis
+              visitedQuads[2] = true;
+            }else{
+              visitedQuads[3] = true;
+            }
+          }else{
+            if(yCoordinates[j] >= 0){
+              visitedQuads[1] = true;
+            }else{
+              visitedQuads[2] = true;
+            }
+          }
+        }
+
+        //check if 1 ≤ QUADS ≤ 3 is visited, if true subset found - terminate
+        int count = 0;
+        for (boolean visitedQuad : visitedQuads) {
+            if (visitedQuad) count++;
+        }
+        if(count == QUADS) return true;
+      }
       return false;
     }
 
@@ -188,12 +225,64 @@ public class ConditionsMetVector {
 
     public boolean calculateRule11(double[] xCoordinates, double[] yCoordinates, int G_PTS) {
         //issue#13
+
+        // Input check
+        if (xCoordinates.length < 3 || G_PTS > xCoordinates.length-2 || G_PTS < 1) return false;
+
+        double x1;
+        double x2;
+
+        // Loop over xCoordinates to see if (x2-x1 < 0) holds for two points x1 and x2
+        // separated by G_PTS consecutive points
+        for (int i = 0; i < xCoordinates.length-G_PTS-1; i++) {
+          x1 = xCoordinates[i];
+          x2 = xCoordinates[i+G_PTS+1];
+
+          // Condition met
+          if (x2-x1 < 0) return true;
+        }
         return false;
     }
 
     public boolean calculateRule12(double[] xCoordinates, double[] yCoordinates, int K_PTS, double LENGTH1, double LENGTH2) {
         //issue#14
-        return false;
+
+        if (xCoordinates.length < 3 || yCoordinates.length < 3 || K_PTS < 0 || LENGTH2 <=0) {
+            return false;
+        }
+        //point 1
+        double p1x = 0;
+        double p1y = 0;
+
+        //point 2
+        double p2x = 0;
+        double p2y = 0;
+
+        //conditions
+        boolean firstCondition=false;
+        boolean secondCondition=false;
+
+        double distance=0;
+
+        for (int i = 0; i < xCoordinates.length - K_PTS - 1; i++) {
+            //point1
+            p1x = xCoordinates[i];
+            p1y = yCoordinates[i];
+            //point2
+            p2x = xCoordinates[i + (K_PTS + 1)];
+            p2y = yCoordinates[i + (K_PTS + 1)];
+            
+            distance = Geometry.calculateDistance(p1x, p1y, p2x, p2y);
+            if (distance > LENGTH1 ) {
+                firstCondition=true;
+            }
+            if (distance < LENGTH2 ) {
+                secondCondition=true;
+            }
+        }
+
+
+        return firstCondition && secondCondition;
     }
 
     public boolean calculateRule13(double[] xCoordinates, double[] yCoordinates, int A_PTS, int B_PTS, double RADIUS1, double RADIUS2) {
