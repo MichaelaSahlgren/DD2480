@@ -185,8 +185,8 @@ public class ConditionsMetVector {
 
     public boolean calculateRule6(double[] xCoordinates, double[] yCoordinates, int N_PTS, double DIST) {
         //issue#8
-        //Condition is not met if NUMPOINTS < 3
-        if (xCoordinates.length < 3) return false;
+        //Condition is not met if N_PTS < 3 or N_PTS > NUMPOINTS or DIST < 0
+        if (N_PTS < 3 || N_PTS > xCoordinates.length || DIST < 0) return false;
 
         double distance;
         double pointX;
