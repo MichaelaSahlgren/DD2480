@@ -388,8 +388,65 @@ public class ConditionsMetVector {
     }
 
     public boolean calculateRule13(double[] xCoordinates, double[] yCoordinates, int A_PTS, int B_PTS, double RADIUS1, double RADIUS2) {
-        //issue#15
+      if (A_PTS < 1) {
         return false;
+      }
+      if (B_PTS < 1) {
+        return false;
+      }
+      if ((xCoordinates.length - 3) < A_PTS + B_PTS) {
+        return false;
+      }
+
+      double x1;
+      double y1;
+      double x2;
+      double y2;
+      double x3;
+      double y3;
+
+      //the first condition is that there is at least one set of three points
+      //that can't be contained in a RADIUS1 circle
+      boolean radius1conditionMet = false;
+      for (int i = 0; i < xCoordinates.length - A_PTS - B_PTS - 2; i++) {
+        int idx2 = i + A_PTS + 1;
+        int idx3 = idx2 + B_PTS + 1;
+
+        x1 = xCoordinates[i];
+        y1 = yCoordinates[i];
+        x2 = xCoordinates[idx2];
+        y2 = yCoordinates[idx2];
+        x3 = xCoordinates[idx3];
+        y3 = yCoordinates[idx3];
+
+        boolean pointsFitInCircle = Geometry.checkIfPointsFitInCircle(x1, y1, x2, y2, x3, y3, RADIUS1);
+        if (!pointsFitInCircle) {
+          radius1conditionMet = true;
+        }
+      }
+
+      //the second condition is that there is at least one set of three points
+      //that can be contained in a RADIUS1 circle
+      boolean radius2conditionMet = false;
+      for (int i = 0; i < xCoordinates.length - A_PTS - B_PTS - 2; i++) {
+        int idx2 = i + A_PTS + 1;
+        int idx3 = idx2 + B_PTS + 1;
+
+        x1 = xCoordinates[i];
+        y1 = yCoordinates[i];
+        x2 = xCoordinates[idx2];
+        y2 = yCoordinates[idx2];
+        x3 = xCoordinates[idx3];
+        y3 = yCoordinates[idx3];
+
+        boolean pointsFitInCircle = Geometry.checkIfPointsFitInCircle(x1, y1, x2, y2, x3, y3, RADIUS2);
+        if (pointsFitInCircle) {
+          radius2conditionMet = true;
+        }
+      }
+
+      //both conditions must be met
+      return (radius1conditionMet && radius2conditionMet);
     }
 
     public boolean calculateRule14(double[] xCoordinates, double[] yCoordinates, int E_PTS, int F_PTS, double AREA1, double AREA2) {
