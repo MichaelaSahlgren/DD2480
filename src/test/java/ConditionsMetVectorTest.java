@@ -614,6 +614,22 @@ class ConditionsMetVectorTest {
     }
 
     @Test
+    @DisplayName("LIC #13 Valid Inputs with two positions")
+    void licThirteenTestValidInputsTwoPositions() {
+        parameters.A_PTS = 1;
+        parameters.B_PTS = 1;
+        parameters.RADIUS1 = 3;
+        parameters.RADIUS2 = 3;
+
+        double[] xCoords = {0, 3, 7, 4, 7, 4};
+        double[] yCoords = {0, 3, 7, 4, 0, 3};
+        //should return true as there is a small triangle and a big triangle,
+        //where the big triangle won't fit in a circle of radius 3, and
+        //the small triangle will
+        assertTrue(controller.calculateRule13(xCoords, yCoords, parameters.A_PTS, parameters.B_PTS, parameters.RADIUS1, parameters.RADIUS2));
+    }
+
+    @Test
     @DisplayName("LIC #14 valid inputs")
     void licFourteenTestValidInputs() {
         parameters.E_PTS = 1;
