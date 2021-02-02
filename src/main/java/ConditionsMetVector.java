@@ -44,22 +44,9 @@ public class ConditionsMetVector {
         x3 = xCoordinates[i+2];
         y3 = yCoordinates[i+2];
 
-        dist12 = Geometry.calculateDistance(x1, y1, x2, y2);
-        dist13 = Geometry.calculateDistance(x1, y1, x3, y3);
-        dist23 = Geometry.calculateDistance(x2, y2, x3, y3);
-
-        // Semiparameter to calculate the area of the triangle
-        semiParameter = (dist12 + dist13 + dist23)/2;
-
-        // Heron's Formula to find area of triangle
-        triangleArea = Math.sqrt(semiParameter*(semiParameter-dist12)*(semiParameter-dist13)*(semiParameter-dist23));
-
-        // Radius of the circumcircle
-        circumradius = (dist12*dist13*dist23)/(4*triangleArea);
-
-        // if circumradius is larger than radius at least one point cannot be contaied
-        // within the circle
-        if (circumradius > RADIUS1) return true;
+        if !(Geometry.pointsFitInCircle(x1, y1, x2, y2, x3, y3, RADIUS1)) {
+          return true;
+        }
       }
       return false;
     }
@@ -261,7 +248,7 @@ public class ConditionsMetVector {
           double x3 = xCoordinates[idx3];
           double y3 = yCoordinates[idx3];
 
-          boolean pointsFitInCircle = Geometry.checkIfPointsFitInCircle(x1, y1, x2, y2, x3, y3);
+          boolean pointsFitInCircle = Geometry.checkIfPointsFitInCircle(x1, y1, x2, y2, x3, y3, RADIUS1);
           if (!pointsFitInCircle) {
             return true;
           }

@@ -63,4 +63,26 @@ class GeometryTests {
         assertNotEquals(notExpectedAngle, angle, 0.0000000001f);
 
     }
+
+    @Test
+    @DisplayName("Calculate points inside circle true")
+    void calculatePointsFitInsideCircleTrue() {
+        double[] xCoordinates = {0, 0, 1};
+        double[] yCoordinates = {0, 1, 1};
+        //these three points should fit inside a circle of radius 3
+        boolean fits = Geometry.pointsFitInCircle(xCoordinates[0], yCoordinates[0], xCoordinates[1], yCoordinates[1], xCoordinates[2], yCoordinates[2], 3);
+
+        assertTrue(fits);
+    }
+
+    @Test
+    @DisplayName("Calculate points inside circle false")
+    void calculatePointsFitInsideCircleFalse() {
+        double[] xCoordinates = {0, 0, 1};
+        double[] yCoordinates = {0, 1, 1};
+        //these three points should not fit inside a circle of radius 1
+        boolean fits = Geometry.pointsFitInCircle(xCoordinates[0], yCoordinates[0], xCoordinates[1], yCoordinates[1], xCoordinates[2], yCoordinates[2], 1);
+
+        assertFalse(fits);
+    }
 }
