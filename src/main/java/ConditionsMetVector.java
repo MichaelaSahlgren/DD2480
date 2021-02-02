@@ -95,6 +95,30 @@ public class ConditionsMetVector {
 
     public boolean calculateRule7(double[] xCoordinates, double[] yCoordinates, int K_PTS, double LENGTH1) {
         //issue#9
+        if (xCoordinates.length < 3 || yCoordinates.length < 3) {
+            return false;
+        }
+        //point 1
+        double p1x = 0;
+        double p1y = 0;
+
+        //point 2
+        double p2x = 0;
+        double p2y = 0;
+
+        for (int i = 0; i < xCoordinates.length - K_PTS - 1; i++) {
+            //point1
+            p1x = xCoordinates[i];
+            p1y = yCoordinates[i];
+            //point2
+            p2x = xCoordinates[i + (K_PTS + 1)];
+            p2y = yCoordinates[i + (K_PTS + 1)];
+
+            if (Geometry.calculateDistance(p1x, p1y, p2x, p2y) > LENGTH1) {
+                return true;
+            }
+        }
+
         return false;
     }
 
