@@ -245,16 +245,22 @@ public class ConditionsMetVector {
           return false;
         }
 
+        double x1;
+        double y1;
+        double x2;
+        double y2;
+        double x3;
+        double y3;
         for (int i = 0; i < xCoordinates.length - A_PTS - B_PTS - 2; i++) {
           int idx2 = i + A_PTS + 1;
           int idx3 = idx2 + B_PTS + 1;
 
-          double x1 = xCoordinates[i];
-          double y1 = yCoordinates[i];
-          double x2 = xCoordinates[idx2];
-          double y2 = yCoordinates[idx2];
-          double x3 = xCoordinates[idx3];
-          double y3 = yCoordinates[idx3];
+          x1 = xCoordinates[i];
+          y1 = yCoordinates[i];
+          x2 = xCoordinates[idx2];
+          y2 = yCoordinates[idx2];
+          x3 = xCoordinates[idx3];
+          y3 = yCoordinates[idx3];
 
           boolean pointsFitInCircle = Geometry.checkIfPointsFitInCircle(x1, y1, x2, y2, x3, y3, RADIUS1);
           if (!pointsFitInCircle) {
