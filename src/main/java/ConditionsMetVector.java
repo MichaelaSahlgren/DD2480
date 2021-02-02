@@ -1,6 +1,7 @@
 import java.lang.Math;
 import java.util.Arrays;
 
+
 public class ConditionsMetVector {
     public boolean calculateRule0(double[] xCoordinates, double[] yCoordinates, double LENGTH1) {
         for(int i = 0; i < xCoordinates.length - 1; i++){
@@ -17,8 +18,50 @@ public class ConditionsMetVector {
     }
 
     public boolean calculateRule1(double[] xCoordinates, double[] yCoordinates, double RADIUS1) {
-        //issue#3
-        return false;
+      //issue#3
+      double x1;
+      double y1;
+      double x2;
+      double y2;
+      double x3;
+      double y3;
+      double dist12;
+      double dist13;
+      double dist23;
+      double semiParameter;
+      double triangleArea;
+      double circumradius;
+
+      if (RADIUS1 < 0 || xCoordinates.length < 0 || yCoordinates.length < 0) return false;
+
+      // Loop over all consecutive sets of 3 points to see if any of the sets has
+      // at least one point that cannot be contained within RADIUS1
+      for (int i = 0; i < xCoordinates.length-2; i++) {
+        x1 = xCoordinates[i];
+        y1 = yCoordinates[i];
+        x2 = xCoordinates[i+1];
+        y2 = yCoordinates[i+1];
+        x3 = xCoordinates[i+2];
+        y3 = yCoordinates[i+2];
+
+        dist12 = Geometry.calculateDistance(x1, y1, x2, y2);
+        dist13 = Geometry.calculateDistance(x1, y1, x3, y3);
+        dist23 = Geometry.calculateDistance(x2, y2, x3, y3);
+
+        // Semiparameter to calculate the area of the triangle
+        semiParameter = (dist12 + dist13 + dist23)/2;
+
+        // Heron's Formula to find area of triangle
+        triangleArea = Math.sqrt(semiParameter*(semiParameter-dist12)*(semiParameter-dist13)*(semiParameter-dist23));
+
+        // Radius of the circumcircle
+        circumradius = (dist12*dist13*dist23)/(4*triangleArea);
+
+        // if circumradius is larger than radius at least one point cannot be contaied
+        // within the circle
+        if (circumradius > RADIUS1) return true;
+      }
+      return false;
     }
 
     public boolean calculateRule2(double[] xCoordinates, double[] yCoordinates, double EPSILON) {
