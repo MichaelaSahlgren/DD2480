@@ -14,7 +14,7 @@ class ConditionsMetVectorTest {
         controller = new ConditionsMetVector();
         parameters = new Parameters();
     }
-    
+
     @Test
     @DisplayName("LIC #0 is correct for no coordinates")
     void licZeroReturnsFalseWhenCoordinatesIsEmpty(){
@@ -72,7 +72,7 @@ class ConditionsMetVectorTest {
         double[] xCoords = {1, -1, 0, -1, 1};
         double[] yCoords = {2, -2, 0, -2, 2};
 
-        Boolean trueTest = controller.calculateRule2(xCoords, yCoords, parameters.EPSILON);
+        boolean trueTest = controller.calculateRule2(xCoords, yCoords, parameters.EPSILON);
         assertTrue(trueTest);
 
         //if the points coincide, they should be ignored but not break the function
@@ -85,7 +85,7 @@ class ConditionsMetVectorTest {
         //if there are less than 3 points
         xCoords = new double[]{1, -1};
         yCoords = new double[]{1, -2};
-        Boolean falseTest = controller.calculateRule2(xCoords, yCoords, parameters.EPSILON);
+        boolean falseTest = controller.calculateRule2(xCoords, yCoords, parameters.EPSILON);
         assertFalse(falseTest);
 
         //if the points coincide, they should be ignored
@@ -104,6 +104,66 @@ class ConditionsMetVectorTest {
 
    
     @Test
+    @DisplayName("LIC #4 tests")
+    void licFourTestValid() {
+        parameters.Q_PTS = 2;
+        parameters.QUADS = 2;
+
+        //true Test cases
+        //returns true when there are Q_PTS consecutive data points in QUADS quadrants at beginning of array
+        double[] xCoords = {1, -1, 1, -1, 1};
+        double[] yCoords = {1, 1, 0, -2, 2};
+
+        assertTrue(controller.calculateRule4(xCoords, yCoords, parameters.Q_PTS, parameters.QUADS));
+
+        //returns true when there are Q_PTS consecutive data points in QUADS quadrants in middle of array
+        xCoords = new double[]{1, 2, 0, -1, 1};
+        yCoords = new double[]{1, 1, 1, -2, 2};
+
+        assertTrue(controller.calculateRule4(xCoords, yCoords, parameters.Q_PTS, parameters.QUADS));
+
+        //returns true when there are Q_PTS consecutive data points in QUADS quadrants at the end of array
+        xCoords = new double[]{1, 2, 0, -1};
+        yCoords = new double[]{1, 1, 1, -2};
+
+        assertTrue(controller.calculateRule4(xCoords, yCoords, parameters.Q_PTS, parameters.QUADS));
+
+        //false TEST cases
+        //returns false when xCoords.length < Q_PTS
+        xCoords = new double[] {1};
+        yCoords = new double[] {1};
+
+        assertFalse(controller.calculateRule4(xCoords, yCoords, parameters.Q_PTS, parameters.QUADS));
+
+        //returns false when y.Coords.length < Q_PTS
+        xCoords = new double[] {1,1,1};
+        yCoords = new double[] {};
+
+        assertFalse(controller.calculateRule4(xCoords, yCoords, parameters.Q_PTS, parameters.QUADS));
+
+        //returns false when QUADS is out of range
+        xCoords = new double[] {1,2,3};
+        yCoords = new double[] {1,3,4};
+        int tmpQUADS = 5;
+
+        assertFalse(controller.calculateRule4(xCoords, yCoords, parameters.Q_PTS, tmpQUADS));
+
+        //returns false when no subset meets the conditions of LIC4
+        xCoords = new double[] {1,2,3};
+        yCoords = new double[] {1,3,4};
+
+        assertFalse(controller.calculateRule4(xCoords, yCoords, parameters.Q_PTS, parameters.QUADS));
+
+        //returns false when the data points lies in too few QUADS
+        xCoords = new double[] {1,-1,0};
+        yCoords = new double[] {1,1,0};
+        tmpQUADS = 3;
+
+        assertFalse(controller.calculateRule4(xCoords, yCoords, parameters.Q_PTS, tmpQUADS));
+
+    }
+
+    @Test
     @DisplayName("LIC #5 returns true when there exist two consecutive data points where the second xCoordinate is less than the first one")
     void licFiveReturnsTrueWhenAllXCoordinatesAreNotIncreasing(){
         double[] xCoordinates = {1, 3, 3, 5, -3, 12};
@@ -120,7 +180,6 @@ class ConditionsMetVectorTest {
         assertFalse(controller.calculateRule5(xCoordinates, yCoordinates));
     }
 
-  
    @Test
    @DisplayName("LIC #7 Valid test")
     void licSevenTestValid() {
@@ -168,7 +227,46 @@ class ConditionsMetVectorTest {
         assertFalse(controller.calculateRule7(xCoords,yCoords,parameters.K_PTS,parameters.LENGTH1));
 
     }
+  
+    @Test
+    @DisplayName("LIC #9 tests")
+    void licNineTestValid() {
+        parameters.EPSILON = 1;
+        parameters.C_PTS = 1; //one to minimize data needed to test
+        parameters.D_PTS = 1;
+        double[] xCoords = {};
+        double[] yCoords = {};
 
+        //true TEST cases
+        //returns false when the angle meets the condition angle < pi - epsilon in LIC9
+        xCoords = new double[]{1, 1, 0, 2, 0};
+        yCoords = new double[]{1, 1, 0, 2, 1};
+        assertTrue(controller.calculateRule9(xCoords, yCoords, parameters.C_PTS, parameters.D_PTS, parameters.EPSILON));
+
+        //returns true when the angle meets the condition angle > pi + epsilon in LIC9
+        parameters.EPSILON = 0;
+        xCoords = new double[]{4, 1, 0, 2, -4};
+        yCoords = new double[]{0, 1, 0, 2, -2};
+        assertTrue(controller.calculateRule9(xCoords, yCoords, parameters.C_PTS, parameters.D_PTS, parameters.EPSILON));
+
+        //false TEST cases
+        //returns false when the angle does not meet the conditions of LIC9
+        parameters.EPSILON = 1;
+        xCoords = new double[]{0, 1, 0, 2, 0};
+        yCoords = new double[]{4, 1, 0, 2, -4};
+        assertFalse(controller.calculateRule9(xCoords, yCoords, parameters.C_PTS, parameters.D_PTS, parameters.EPSILON));
+
+        //returns false when there are too few vertices
+        xCoords = new double[]{1, -1};
+        yCoords = new double[]{1, -2};
+        assertFalse(controller.calculateRule9(xCoords, yCoords, parameters.C_PTS, parameters.D_PTS, parameters.EPSILON));
+
+        //returns false when any of the three vertices are the same
+        xCoords = new double[]{1, 0, 1, 1, -1, 1};
+        yCoords = new double[]{1, 0, 1, 1, -1, 1};
+        assertFalse(controller.calculateRule9(xCoords, yCoords, parameters.C_PTS, parameters.D_PTS, parameters.EPSILON));
+    }
+  
     @Test
     @DisplayName("LIC #12 Valid test")
     void licTwelveTestValid() {
@@ -209,8 +307,6 @@ class ConditionsMetVectorTest {
         yCoords = new double[]{2, -2, 0, 8, 2};
 
         assertFalse(controller.calculateRule12(xCoords,yCoords,parameters.K_PTS,parameters.LENGTH1,parameters.LENGTH2));
-
-
     }
 
     @Test
@@ -237,6 +333,5 @@ class ConditionsMetVectorTest {
         yCoords = new double[]{2, -2, 0, 8, 2};
         //should return false as Length2 is negative
         assertFalse(controller.calculateRule12(xCoords,yCoords,parameters.K_PTS,parameters.LENGTH1,parameters.LENGTH2));
-
     }
 }

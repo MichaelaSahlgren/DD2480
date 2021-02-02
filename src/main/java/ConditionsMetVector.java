@@ -20,15 +20,15 @@ public class ConditionsMetVector {
 
     public boolean calculateRule2(double[] xCoordinates, double[] yCoordinates, double EPSILON) {
         //issue#4
-        
+
         //point 1
         double p1x = 0;
         double p1y = 0;
-        
+
         //point 2
         double p2x = 0;
         double p2y = 0;
-        
+
         //point 3
         double p3x = 0;
         double p3y = 0;
@@ -58,7 +58,7 @@ public class ConditionsMetVector {
 
             //amgle using (p2x,p2y) as the vertex
             angle = Geometry.calculateAngle(p2x, p2y, p1x, p1y, p3x, p3y);
-            
+
             if (angle < (Math.PI - EPSILON) || angle > (Math.PI + EPSILON)) {
                 return true;
             }
@@ -73,9 +73,45 @@ public class ConditionsMetVector {
         return false;
     }
 
-    public boolean calculateRule4(double[] xCoordinates, double[] yCoordinates, int Q_PTS) {
-        //issue#6
-        return false;
+    public boolean calculateRule4(double[] xCoordinates, double[] yCoordinates, int Q_PTS, int QUADS) {
+      //issue#6
+
+      //check special cases
+      if(xCoordinates.length < Q_PTS || yCoordinates.length < Q_PTS) return false;
+      if(QUADS < 1 || QUADS > 3) return false;
+
+      //iterate over all data points
+      for(int i = 0; i<(xCoordinates.length)-Q_PTS+1; i++){
+
+        //check all subset of length Q_PTS
+        boolean[] visitedQuads = new boolean[4];//visited QUADS
+        for(int j = i; j<i+Q_PTS; j++){
+          //check which quadrant the point is in
+          if(xCoordinates[j] >= 0){
+            if(yCoordinates[j] >= 0){
+              visitedQuads[0] = true;
+            }else if(xCoordinates[j]==0 && yCoordinates[j]<0){ //the point lies on the negative y-axis
+              visitedQuads[2] = true;
+            }else{
+              visitedQuads[3] = true;
+            }
+          }else{
+            if(yCoordinates[j] >= 0){
+              visitedQuads[1] = true;
+            }else{
+              visitedQuads[2] = true;
+            }
+          }
+        }
+
+        //check if 1 ≤ QUADS ≤ 3 is visited, if true subset found - terminate
+        int count = 0;
+        for (boolean visitedQuad : visitedQuads) {
+            if (visitedQuad) count++;
+        }
+        if(count == QUADS) return true;
+      }
+      return false;
     }
 
     public boolean calculateRule5(double[] xCoordinates, double[] yCoordinates) {
@@ -128,6 +164,41 @@ public class ConditionsMetVector {
 
     public boolean calculateRule9(double[] xCoordinates, double[] yCoordinates, int C_PTS, int D_PTS, double EPSILON) {
         //issue#11
+
+        //check special cases
+        if(xCoordinates.length<5 || yCoordinates.length<5) return false;
+
+        double p1x = 0;//point 1
+        double p1y = 0;
+        double p2x = 0;//point 2
+        double p2y = 0;
+        double p3x = 0;//point 3
+        double p3y = 0;
+        double angle = 0;
+        int p2idx;
+        int p3idx;
+
+        for(int i = 0; i<xCoordinates.length-(C_PTS+D_PTS)-2; i++){
+          p1x = xCoordinates[i];
+          p1y = yCoordinates[i];
+
+          p2idx = i + C_PTS + 1;
+          p2x = xCoordinates[p2idx];
+          p2y = yCoordinates[p2idx];
+
+          p3idx = p2idx + D_PTS + 1;
+          p3x = xCoordinates[p3idx];
+          p3y = yCoordinates[p3idx];
+
+          //if point 1 or 3 coincides with the vertex (p2) then skip!
+          if (p1x == p2x && p1y == p2y || p3x == p2x && p3y == p2y)
+              continue;
+
+          angle = Geometry.calculateAngle(p2x,p2y,p1x,p1y,p3x,p3y);
+
+          if (angle > Math.PI+EPSILON || angle < Math.PI-EPSILON) return true;
+        }
+
         return false;
     }
 
