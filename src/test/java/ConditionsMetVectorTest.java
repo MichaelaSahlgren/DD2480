@@ -102,7 +102,7 @@ class ConditionsMetVectorTest {
 
     }
 
-   
+
     @Test
     @DisplayName("LIC #4 tests")
     void licFourTestValid() {
@@ -265,6 +265,53 @@ class ConditionsMetVectorTest {
         xCoords = new double[]{1, 0, 1, 1, -1, 1};
         yCoords = new double[]{1, 0, 1, 1, -1, 1};
         assertFalse(controller.calculateRule9(xCoords, yCoords, parameters.C_PTS, parameters.D_PTS, parameters.EPSILON));
+    }
+  
+    @Test
+    @DisplayName("LIC #11 invalid inputs")
+    void licElevenTestInvalidInputs() {
+
+        // G_PTS < 1
+        parameters.G_PTS = 0;
+        double[] xCoords = {0,0,0};
+        double[] yCoords = {0,0,0};
+
+        boolean falseTest = controller.calculateRule11(xCoords, yCoords, parameters.G_PTS);
+        assertFalse(falseTest);
+
+        // G_PTS > NUMPOINTS-2
+        parameters.G_PTS = 4;
+        falseTest = controller.calculateRule11(xCoords, yCoords, parameters.G_PTS);
+        assertFalse(falseTest);
+
+        // NUMPOINTS < 3
+        xCoords = new double[]{0,0};
+        yCoords = new double[]{0,0};
+        falseTest = controller.calculateRule11(xCoords, yCoords, parameters.G_PTS);
+        assertFalse(falseTest);
+    }
+
+    @Test
+    @DisplayName("LIC #11 valid tests")
+    void licElevenValidTest() {
+
+        parameters.G_PTS = 1;
+        double[] yCoords = {0,0,0};
+
+        // True test, x2-x1 < 0
+        double[] xCoords = {3,2,1};
+        boolean trueTest = controller.calculateRule11(xCoords, yCoords, parameters.G_PTS);
+        assertTrue(trueTest);
+
+        // False test, x2-x1 > 0
+        xCoords = new double[]{1,2,3};
+        boolean falseTest = controller.calculateRule11(xCoords, yCoords, parameters.G_PTS);
+        assertFalse(falseTest);
+
+        // False test, x2-x1 = 0
+        xCoords = new double[]{1,1,1};
+        falseTest = controller.calculateRule11(xCoords, yCoords, parameters.G_PTS);
+        assertFalse(falseTest);
     }
   
     @Test
