@@ -65,42 +65,42 @@ class ConditionsMetVectorTest {
     @DisplayName("LIC #1 test invalid inputs")
     void licOneInvalidInputTest() {
 
-      // RADIUS1 < 0 invalid
-      parameters.RADIUS1 = -1;
-      double[] xCoords = {3, 1, 2};
-      double[] yCoords = {1, 2, 3};
+        // RADIUS1 < 0 invalid
+        parameters.RADIUS1 = -1;
+        double[] xCoords = {3, 1, 2};
+        double[] yCoords = {1, 2, 3};
 
-      boolean falseTest = controller.calculateRule1(xCoords,yCoords,parameters.RADIUS1);
-      assertFalse(falseTest);
+        boolean falseTest = controller.calculateRule1(xCoords,yCoords,parameters.RADIUS1);
+        assertFalse(falseTest);
     }
 
     @Test
     @DisplayName("LIC #1 valid tests")
     void licOneTestValid() {
 
-      // True test, points have same x-vlaue i.e no angle
-      parameters.RADIUS1 = 2;
+        // True test, points have same x-vlaue i.e no angle
+        parameters.RADIUS1 = 2;
 
-      double[] xCoords = {1, 1, 1};
-      double[] yCoords = {0, 4, 5};
+        double[] xCoords = {1, 1, 1};
+        double[] yCoords = {0, 4, 5};
 
-      Boolean trueTest = controller.calculateRule1(xCoords,yCoords,parameters.RADIUS1);
-      assertTrue(trueTest);
+        Boolean trueTest = controller.calculateRule1(xCoords,yCoords,parameters.RADIUS1);
+        assertTrue(trueTest);
 
-      // True test, at least one point cannot be contaied within the circle
-      parameters.RADIUS1 = 1.5;
+        // True test, at least one point cannot be contaied within the circle
+        parameters.RADIUS1 = 1.5;
 
-      xCoords = new double[]{-2, 2, 3};
-      yCoords = new double[]{1, 3, 2};
+        xCoords = new double[]{-2, 2, 3};
+        yCoords = new double[]{1, 3, 2};
 
-      trueTest = controller.calculateRule1(xCoords,yCoords,parameters.RADIUS1);
-      assertTrue(trueTest);
+        trueTest = controller.calculateRule1(xCoords,yCoords,parameters.RADIUS1);
+        assertTrue(trueTest);
 
-      // False test, all points contained within the circle
-      parameters.RADIUS1 = 3;
+        // False test, all points contained within the circle
+        parameters.RADIUS1 = 3;
 
-      Boolean falseTest = controller.calculateRule1(xCoords,yCoords,parameters.RADIUS1);
-      assertFalse(falseTest);
+        Boolean falseTest = controller.calculateRule1(xCoords,yCoords,parameters.RADIUS1);
+        assertFalse(falseTest);
     }
 
     @Test
@@ -245,69 +245,69 @@ class ConditionsMetVectorTest {
     @DisplayName("LIC #6 valid when N_PTS = NUMPOINTS")
     void licSixValidWhenN_PTSEqualsNUMPOINTS() {
 
-      // True test, all points futher than DIST from the line
-      parameters.N_PTS = 6;
-      parameters.DIST = 1;
+        // True test, all points futher than DIST from the line
+        parameters.N_PTS = 6;
+        parameters.DIST = 1;
 
-      double[] xCoords = {-2, -2, -2, -4, 0, 2};
-      double[] yCoords = {-4, -2, 0, 1, 2, 0};
+        double[] xCoords = {-2, -2, -2, -4, 0, 2};
+        double[] yCoords = {-4, -2, 0, 1, 2, 0};
 
-      Boolean trueTest = controller.calculateRule6(xCoords, yCoords, parameters.N_PTS, parameters.DIST);
-      assertTrue(trueTest);
+        Boolean trueTest = controller.calculateRule6(xCoords, yCoords, parameters.N_PTS, parameters.DIST);
+        assertTrue(trueTest);
 
-      // True test, one point futher than DIST from the line
-      parameters.DIST = 4;
+        // True test, one point futher than DIST from the line
+        parameters.DIST = 4;
 
-      trueTest = controller.calculateRule6(xCoords, yCoords, parameters.N_PTS, parameters.DIST);
-      assertTrue(trueTest);
+        trueTest = controller.calculateRule6(xCoords, yCoords, parameters.N_PTS, parameters.DIST);
+        assertTrue(trueTest);
 
-      // False test, no points futher than DIST from the line
-      parameters.DIST = 5;
+        // False test, no points futher than DIST from the line
+        parameters.DIST = 5;
 
-      Boolean falseTest = controller.calculateRule6(xCoords, yCoords, parameters.N_PTS, parameters.DIST);
-      assertFalse(falseTest);
+        Boolean falseTest = controller.calculateRule6(xCoords, yCoords, parameters.N_PTS, parameters.DIST);
+        assertFalse(falseTest);
     }
 
     @Test
     @DisplayName("LIC #6 invalid when N_PTS > NUMPOINTS")
     void licSixValidWhenN_PTSLargerThanNUMPOINTS() {
-      // Invalid input N_PST > NUMPOINTS
-      parameters.N_PTS = 7;
-      parameters.DIST = 1;
+        // Invalid input N_PST > NUMPOINTS
+        parameters.N_PTS = 7;
+        parameters.DIST = 1;
 
-      double[] xCoords = {-2, -2, -2, -4, 0, 2};
-      double[] yCoords = {-4, -2, 0, 1, 2, 0};
+        double[] xCoords = {-2, -2, -2, -4, 0, 2};
+        double[] yCoords = {-4, -2, 0, 1, 2, 0};
 
-      Boolean falseTest = controller.calculateRule6(xCoords, yCoords, parameters.N_PTS, parameters.DIST);
-      assertFalse(falseTest);
+        Boolean falseTest = controller.calculateRule6(xCoords, yCoords, parameters.N_PTS, parameters.DIST);
+        assertFalse(falseTest);
     }
 
     @Test
     @DisplayName("LIC #6 valid when N_PTS < NUMPOINTS")
     void licSixValidWhenN_PTSLessThanNUMPOINTS() {
-      // True test, at least one point futher than DIST from the line
-      parameters.N_PTS = 3;
-      parameters.DIST = 1;
+        // True test, at least one point futher than DIST from the line
+        parameters.N_PTS = 3;
+        parameters.DIST = 1;
 
-      double[] xCoords = {-2, -2, -2, -4, 0, 2};
-      double[] yCoords = {-4, -2, 0, 1, 2, 0};
+        double[] xCoords = {-2, -2, -2, -4, 0, 2};
+        double[] yCoords = {-4, -2, 0, 1, 2, 0};
 
-      Boolean trueTest = controller.calculateRule6(xCoords, yCoords, parameters.N_PTS, parameters.DIST);
-      assertTrue(trueTest);
+        Boolean trueTest = controller.calculateRule6(xCoords, yCoords, parameters.N_PTS, parameters.DIST);
+        assertTrue(trueTest);
 
-      // False test, no point further than DIST from the line
-      parameters.N_PTS = 3;
-      parameters.DIST = 10;
+        // False test, no point further than DIST from the line
+        parameters.N_PTS = 3;
+        parameters.DIST = 10;
 
-      xCoords = new double[]{-4, -3, 0, -2, -2};
-      yCoords = new double[]{-1, 0, 2, -2, -4};
+        xCoords = new double[]{-4, -3, 0, -2, -2};
+        yCoords = new double[]{-1, 0, 2, -2, -4};
 
-      Boolean falseTest = controller.calculateRule6(xCoords, yCoords, parameters.N_PTS, parameters.DIST);
-      assertFalse(falseTest);
+        Boolean falseTest = controller.calculateRule6(xCoords, yCoords, parameters.N_PTS, parameters.DIST);
+        assertFalse(falseTest);
     }
 
-   @Test
-   @DisplayName("LIC #7 Valid test")
+    @Test
+    @DisplayName("LIC #7 Valid test")
     void licSevenTestValid() {
 
         parameters.LENGTH1=3;
@@ -503,8 +503,8 @@ class ConditionsMetVectorTest {
 
         parameters.LENGTH2=0.5;
         //should return false as condition2 is never fullfilled
-         xCoords = new double[]{1, -1, 0, 5, 1};
-         yCoords = new double[]{2, -2, 0, 8, 2};
+        xCoords = new double[]{1, -1, 0, 5, 1};
+        yCoords = new double[]{2, -2, 0, 8, 2};
 
         assertFalse(controller.calculateRule12(xCoords,yCoords,parameters.K_PTS,parameters.LENGTH1,parameters.LENGTH2));
 
@@ -540,5 +540,68 @@ class ConditionsMetVectorTest {
         yCoords = new double[]{2, -2, 0, 8, 2};
         //should return false as Length2 is negative
         assertFalse(controller.calculateRule12(xCoords,yCoords,parameters.K_PTS,parameters.LENGTH1,parameters.LENGTH2));
+    }
+  
+    @Test
+    @DisplayName("LIC #14 valid inputs")
+    void licFourteenTestValidInputs() {
+        parameters.E_PTS = 1;
+        parameters.F_PTS = 1;
+        parameters.AREA1 = 1;
+        parameters.AREA2 = 5;
+
+        //true Test cases
+        //returns true when one triangle meets the conditions for LIC14
+        double[] xCoords = {0, 1, 2, 5, 0};
+        double[] yCoords = {0, 0, 0, 0, 2};
+
+        assertTrue(controller.calculateRule14(xCoords, yCoords, parameters.E_PTS, parameters.F_PTS, parameters.AREA1, parameters.AREA2));
+
+        //returns true when more than one triangle meets the conditions for LIC14
+        xCoords = new double[] {1, 0, 2, 5, 0, 0};
+        yCoords = new double[] {0, 0, 0, 0, 2, 5};
+
+        assertTrue(controller.calculateRule14(xCoords, yCoords, parameters.E_PTS, parameters.F_PTS, parameters.AREA1, parameters.AREA2));
+
+        //false TEST cases
+        //returns false when the first condition for LIC14 isn't met
+        xCoords = new double[] {0, 0, 1, 0, 0};
+        yCoords = new double[] {0, 0, 0, 2, 1};
+
+        assertFalse(controller.calculateRule14(xCoords, yCoords, parameters.E_PTS, parameters.F_PTS, parameters.AREA1, parameters.AREA2));
+
+        //returns false when the second condition for LIC14 isn't met
+        xCoords = new double[] {1, 0, 5, 0, 1};
+        yCoords = new double[] {1, 0, 1, 2, 5};
+
+        assertFalse(controller.calculateRule14(xCoords, yCoords, parameters.E_PTS, parameters.F_PTS, parameters.AREA1, parameters.AREA2));
+
+    }
+    @Test
+    @DisplayName("LIC #14 invalid inputs")
+    void licFourteenTestInvalidInputs() {
+        parameters.E_PTS = 1;
+        parameters.F_PTS = 1;
+        parameters.AREA1 = 1;
+        parameters.AREA2 = 5;
+
+        //false TEST cases
+        //returns false when there aren't the same number of x-coordinates and y-coordinates
+        double[] xCoords = {1,2};
+        double[] yCoords = {1};
+
+        assertFalse(controller.calculateRule14(xCoords, yCoords, parameters.E_PTS, parameters.F_PTS, parameters.AREA1, parameters.AREA2));
+
+        //returns false when xCoords.length < 5 (or yCoords.length < 5)
+        xCoords = new double[] {1};
+        yCoords = new double[] {1};
+
+        assertFalse(controller.calculateRule14(xCoords, yCoords, parameters.E_PTS, parameters.F_PTS, parameters.AREA1, parameters.AREA2));
+
+        //returns false when area = 0
+        xCoords = new double[] {0, 0, 0, 0, 0};
+        yCoords = new double[] {0, 0, 0, 0, 0};
+
+        assertFalse(controller.calculateRule14(xCoords, yCoords, parameters.E_PTS, parameters.F_PTS, parameters.AREA1, parameters.AREA2));
     }
 }
