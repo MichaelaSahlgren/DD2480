@@ -240,7 +240,32 @@ public class ConditionsMetVector {
     }
 
     public boolean calculateRule8(double[] xCoordinates, double[] yCoordinates, int A_PTS, int B_PTS, double RADIUS1) {
-        //issue#10
+        if (A_PTS < 1) {
+          return false;
+        }
+        if (B_PTS < 1) {
+          return false;
+        }
+        if ((xCoordinates.length - 3) < A_PTS + B_PTS) {
+          return false;
+        }
+
+        for (int i = 0; i < xCoordinates.length - A_PTS - B_PTS - 2; i++) {
+          int idx2 = i + A_PTS + 1;
+          int idx3 = idx2 + B_PTS + 1;
+
+          double x1 = xCoordinates[i];
+          double y1 = yCoordinates[i];
+          double x2 = xCoordinates[idx2];
+          double y2 = yCoordinates[idx2];
+          double x3 = xCoordinates[idx3];
+          double y3 = yCoordinates[idx3];
+
+          boolean pointsFitInCircle = Geometry.checkIfPointsFitInCircle(x1, y1, x2, y2, x3, y3);
+          if (!pointsFitInCircle) {
+            return true;
+          }
+        }
         return false;
     }
 
@@ -337,7 +362,7 @@ public class ConditionsMetVector {
             //point2
             p2x = xCoordinates[i + (K_PTS + 1)];
             p2y = yCoordinates[i + (K_PTS + 1)];
-            
+
             distance = Geometry.calculateDistance(p1x, p1y, p2x, p2y);
             if (distance > LENGTH1 ) {
                 firstCondition=true;

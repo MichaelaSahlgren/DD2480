@@ -203,7 +203,7 @@ class ConditionsMetVectorTest {
         assertFalse(controller.calculateRule4(xCoords, yCoords, parameters.Q_PTS, tmpQUADS));
 
     }
-  
+
     @Test
     @DisplayName("LIC #5 returns true when there exist two consecutive data points where the second xCoordinate is less than the first one")
     void licFiveReturnsTrueWhenAllXCoordinatesAreNotIncreasing(){
@@ -220,7 +220,7 @@ class ConditionsMetVectorTest {
 
         assertFalse(controller.calculateRule5(xCoordinates, yCoordinates));
     }
-  
+
     @Test
     @DisplayName("LIC #6 valid when N_PTS = NUMPOINTS")
     void licSixValidWhenN_PTSEqualsNUMPOINTS() {
@@ -333,7 +333,29 @@ class ConditionsMetVectorTest {
         assertFalse(controller.calculateRule7(xCoords,yCoords,parameters.K_PTS,parameters.LENGTH1));
 
     }
-  
+
+    @Test
+    @DisplayName("LIC #8 InvalidInputs")
+    void licEightTestInvalidInputs() {
+        parameters.A_PTS = 2;
+        parameters.B_PTS = 1;
+        parameters.RADIUS1 = 1;
+
+        double[] xCoords = {0, 0, 0, 0, 0};
+        double[] yCoords = {1, 1, 1, 1, 1};
+        //should return false as the input is invalid.. NUMPOINTS is not high enough
+        assertFalse(controller.calculateRule8(xCoords, yCoords, parameters.A_PTS, parameters.B_PTS, parameters.RADIUS1));
+
+        parameters.A_PTS = 0;
+        parameters.B_PTS = 1;
+        parameters.RADIUS1 = 1;
+
+        double[] xCoords = {0, 0, 0, 0, 0};
+        double[] yCoords = {1, 1, 1, 1, 1};
+        //should return false as the input is invalid.. A_PTS is too small
+        assertFalse(controller.calculateRule8(xCoords, yCoords, parameters.A_PTS, parameters.B_PTS, parameters.RADIUS1));
+    }
+
     @Test
     @DisplayName("LIC #9 tests")
     void licNineTestValid() {
@@ -372,7 +394,7 @@ class ConditionsMetVectorTest {
         yCoords = new double[]{1, 0, 1, 1, -1, 1};
         assertFalse(controller.calculateRule9(xCoords, yCoords, parameters.C_PTS, parameters.D_PTS, parameters.EPSILON));
     }
-  
+
     @Test
     @DisplayName("LIC #11 invalid inputs")
     void licElevenTestInvalidInputs() {
@@ -419,7 +441,7 @@ class ConditionsMetVectorTest {
         falseTest = controller.calculateRule11(xCoords, yCoords, parameters.G_PTS);
         assertFalse(falseTest);
     }
-  
+
     @Test
     @DisplayName("LIC #12 Valid test")
     void licTwelveTestValid() {
