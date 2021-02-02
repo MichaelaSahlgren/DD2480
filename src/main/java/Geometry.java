@@ -36,5 +36,4 @@ public class Geometry{
     double triangleArea = (dist1*dist2*Math.sin(angle))/2;
     return triangleArea;
   }
-
 }
