@@ -27,4 +27,8 @@ public class Geometry{
     return Math.acos(((sideA * sideA) + (sideB * sideB) - (sideC * sideC))/(2.0 * sideA * sideB));
   }
 
+  public static double calculateTriangleArea(double x1, double y1, double x2, double y2, double x3, double y3){
+    return 0;
+  }
+
 }

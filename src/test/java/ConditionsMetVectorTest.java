@@ -14,7 +14,7 @@ class ConditionsMetVectorTest {
         controller = new ConditionsMetVector();
         parameters = new Parameters();
     }
-    
+
     @Test
     @DisplayName("LIC #0 is correct for no coordinates")
     void licZeroReturnsFalseWhenCoordinatesIsEmpty(){
@@ -102,7 +102,26 @@ class ConditionsMetVectorTest {
 
     }
 
-   
+    @Test
+    @DisplayName("LIC #3 testing if enough points were inputed")
+    void licThreeEnoughPoints(){
+        parameters.AREA1 = 0;
+        double[] xCoordinates = {0, 0};
+        double[] yCoordinates = {1, 1};
+
+        assertFalse(controller.calculateRule3(xCoordinates, yCoordinates, parameters.AREA1));
+    }
+
+    @Test
+    @DisplayName("LIC #3 testing with AREA1 of zero")
+    void licThreeAreaOfZero(){
+        parameters.AREA1 = 0;
+        double[] xCoordinates = {0, 1, 1};
+        double[] yCoordinates = {0, 1, 0};
+
+        assertTrue(controller.calculateRule3(xCoordinates, yCoordinates, parameters.AREA1));
+    }
+
     @Test
     @DisplayName("LIC #5 returns true when there exist two consecutive data points where the second xCoordinate is less than the first one")
     void licFiveReturnsTrueWhenAllXCoordinatesAreNotIncreasing(){
