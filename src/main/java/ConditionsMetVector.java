@@ -115,7 +115,21 @@ public class ConditionsMetVector {
     }
 
     public boolean calculateRule3(double[] xCoordinates, double[] yCoordinates, double AREA1) {
-        //issue#5
+      if(xCoordinates.length < 3){
+        return false;
+      }
+      for (int i = 0; i < (xCoordinates.length - 2); i++) {
+        double x1 = xCoordinates[i];
+        double y1 = yCoordinates[i];
+        double x2 = xCoordinates[i+1];
+        double y2 = yCoordinates[i+1];
+        double x3 = xCoordinates[i+2];
+        double y3 = yCoordinates[i+2];
+        double triangleArea = Geometry.calculateTriangleArea(x1, y1, x2, y2, x3, y3);
+        if(triangleArea>AREA1){
+          return true;
+        }
+      }
         return false;
     }
 
@@ -171,8 +185,8 @@ public class ConditionsMetVector {
 
     public boolean calculateRule6(double[] xCoordinates, double[] yCoordinates, int N_PTS, double DIST) {
         //issue#8
-        //Condition is not met if NUMPOINTS < 3
-        if (xCoordinates.length < 3) return false;
+        //Condition is not met if N_PTS < 3 or N_PTS > NUMPOINTS or DIST < 0
+        if (N_PTS < 3 || N_PTS > xCoordinates.length || DIST < 0) return false;
 
         double distance;
         double pointX;
@@ -285,7 +299,18 @@ public class ConditionsMetVector {
     }
 
     public boolean calculateRule10(double[] xCoordinates, double[] yCoordinates, int E_PTS, int F_PTS, double AREA1) {
-        //issue#12
+        for(int i = 0; i < xCoordinates.length - E_PTS - F_PTS - 2; i++){
+            if(Geometry.calculateTriangleArea(
+                xCoordinates[i],
+                yCoordinates[i],
+                xCoordinates[i + E_PTS + 1],
+                yCoordinates[i + E_PTS + 1],
+                xCoordinates[i + E_PTS + F_PTS + 2],
+                yCoordinates[i + E_PTS + F_PTS + 2]
+            ) > AREA1){
+                return true;
+            }
+        }
         return false;
     }
 
