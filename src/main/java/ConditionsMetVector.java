@@ -18,19 +18,12 @@ public class ConditionsMetVector {
     }
 
     public boolean calculateRule1(double[] xCoordinates, double[] yCoordinates, double RADIUS1) {
-        //issue#3
         double x1;
         double y1;
         double x2;
         double y2;
         double x3;
         double y3;
-        double dist12;
-        double dist13;
-        double dist23;
-        double semiParameter;
-        double triangleArea;
-        double circumradius;
 
         if (RADIUS1 < 0 || xCoordinates.length < 0 || yCoordinates.length < 0) return false;
 
@@ -44,22 +37,9 @@ public class ConditionsMetVector {
             x3 = xCoordinates[i+2];
             y3 = yCoordinates[i+2];
 
-            dist12 = Geometry.calculateDistance(x1, y1, x2, y2);
-            dist13 = Geometry.calculateDistance(x1, y1, x3, y3);
-            dist23 = Geometry.calculateDistance(x2, y2, x3, y3);
-
-            // Semiparameter to calculate the area of the triangle
-            semiParameter = (dist12 + dist13 + dist23)/2;
-
-            // Heron's Formula to find area of triangle
-            triangleArea = Math.sqrt(semiParameter*(semiParameter-dist12)*(semiParameter-dist13)*(semiParameter-dist23));
-
-            // Radius of the circumcircle
-            circumradius = (dist12*dist13*dist23)/(4*triangleArea);
-
-            // if circumradius is larger than radius at least one point cannot be contaied
-            // within the circle
-            if (circumradius > RADIUS1) return true;
+            if (!(Geometry.checkIfPointsFitInCircle(x1, y1, x2, y2, x3, y3, RADIUS1))) {
+                return true;
+            }
         }
         return false;
     }
@@ -254,7 +234,38 @@ public class ConditionsMetVector {
     }
 
     public boolean calculateRule8(double[] xCoordinates, double[] yCoordinates, int A_PTS, int B_PTS, double RADIUS1) {
-        //issue#10
+        if (A_PTS < 1) {
+          return false;
+        }
+        if (B_PTS < 1) {
+          return false;
+        }
+        if ((xCoordinates.length - 3) < A_PTS + B_PTS) {
+          return false;
+        }
+
+        double x1;
+        double y1;
+        double x2;
+        double y2;
+        double x3;
+        double y3;
+        for (int i = 0; i < xCoordinates.length - A_PTS - B_PTS - 2; i++) {
+          int idx2 = i + A_PTS + 1;
+          int idx3 = idx2 + B_PTS + 1;
+
+          x1 = xCoordinates[i];
+          y1 = yCoordinates[i];
+          x2 = xCoordinates[idx2];
+          y2 = yCoordinates[idx2];
+          x3 = xCoordinates[idx3];
+          y3 = yCoordinates[idx3];
+
+          boolean pointsFitInCircle = Geometry.checkIfPointsFitInCircle(x1, y1, x2, y2, x3, y3, RADIUS1);
+          if (!pointsFitInCircle) {
+            return true;
+          }
+        }
         return false;
     }
 

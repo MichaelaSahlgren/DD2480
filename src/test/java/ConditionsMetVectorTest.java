@@ -355,6 +355,55 @@ class ConditionsMetVectorTest {
     }
 
     @Test
+    @DisplayName("LIC #8 InvalidInputs")
+    void licEightTestInvalidInputs() {
+        parameters.A_PTS = 2;
+        parameters.B_PTS = 1;
+        parameters.RADIUS1 = 1;
+
+        double[] xCoords = {0, 0, 0, 0, 0};
+        double[] yCoords = {1, 1, 1, 1, 1};
+        //should return false as the input is invalid.. NUMPOINTS is not high enough
+        assertFalse(controller.calculateRule8(xCoords, yCoords, parameters.A_PTS, parameters.B_PTS, parameters.RADIUS1));
+
+        parameters.A_PTS = 0;
+        parameters.B_PTS = 1;
+        parameters.RADIUS1 = 1;
+
+        double[] xCoords2 = {0, 0, 0, 0, 0};
+        double[] yCoords2 = {1, 1, 1, 1, 1};
+        //should return false as the input is invalid.. A_PTS is too small
+        assertFalse(controller.calculateRule8(xCoords2, yCoords2, parameters.A_PTS, parameters.B_PTS, parameters.RADIUS1));
+    }
+
+    @Test
+    @DisplayName("LIC #8 Valid Inputs")
+    void licEightTestValidInputs() {
+        parameters.A_PTS = 1;
+        parameters.B_PTS = 1;
+        parameters.RADIUS1 = 1;
+
+        double[] xCoords = {0, -1, 3, -1, 0};
+        double[] yCoords = {0, -1, 3, -1, 3};
+        //should return true as the points don't fit in a circle of radius 1
+        assertTrue(controller.calculateRule8(xCoords, yCoords, parameters.A_PTS, parameters.B_PTS, parameters.RADIUS1));
+    }
+
+    @Test
+    @DisplayName("LIC #8 Valid Inputs with two positions")
+    void licEightTestValidInputsTwoPositions() {
+        parameters.A_PTS = 1;
+        parameters.B_PTS = 1;
+        parameters.RADIUS1 = 3;
+
+        double[] xCoords = {0, 3, 7, 4, 7, 4};
+        double[] yCoords = {0, 3, 7, 4, 0, 3};
+        //should return true as there is a small triangle and a big triangle,
+        //where the big triangle won't fit in a circle of radius 3
+        assertTrue(controller.calculateRule8(xCoords, yCoords, parameters.A_PTS, parameters.B_PTS, parameters.RADIUS1));
+    }
+
+    @Test
     @DisplayName("LIC #9 tests")
     void licNineTestValid() {
         parameters.EPSILON = 1;
@@ -392,7 +441,7 @@ class ConditionsMetVectorTest {
         yCoords = new double[]{1, 0, 1, 1, -1, 1};
         assertFalse(controller.calculateRule9(xCoords, yCoords, parameters.C_PTS, parameters.D_PTS, parameters.EPSILON));
     }
-  
+
     @Test
     @DisplayName("LIC #10 valid tests")
     void licTenTestValid(){
