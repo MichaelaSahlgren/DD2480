@@ -576,4 +576,27 @@ class ConditionsMetVectorTest {
         //should return false as Length2 is negative
         assertFalse(controller.calculateRule12(xCoords,yCoords,parameters.K_PTS,parameters.LENGTH1,parameters.LENGTH2));
     }
+
+    @Test
+    @DisplayName("LIC #13 InvalidInputs")
+    void licThirteenTestInvalidInputs() {
+        double[] xCoords = {0, 0, 0, 0, 0};
+        double[] yCoords = {1, 1, 1, 1, 1};
+        //should return false as the input is invalid.. NUMPOINTS is not high enough
+        assertFalse(controller.calculateRule13(xCoords, yCoords, 2, 1, 1.0, 2.0));
+
+        double[] xCoords2 = {0, 0, 0, 0, 0};
+        double[] yCoords2 = {1, 1, 1, 1, 1};
+        //should return false as the input is invalid.. A_PTS is too small
+        assertFalse(controller.calculateRule13(xCoords2, yCoords2, 0, 1, 1.0, 2.0));
+    }
+
+    @Test
+    @DisplayName("LIC #13 Valid Inputs")
+    void licThirteenTestValidInputs() {
+        double[] xCoords = {0, -1, 3, -1, 0};
+        double[] yCoords = {0, -1, 3, -1, 3};
+        //should return true as the points don't fit in a circle of radius 1 but they do fit in a circle of radius 2
+        assertTrue(controller.calculateRule13(xCoords, yCoords, 1, 1, 1.0, 3.0));
+    }
 }
