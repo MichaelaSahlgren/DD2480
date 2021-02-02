@@ -14,14 +14,17 @@ public class ConditionsMetVector {
       double y2;
       double x3;
       double y3;
-      double centerX;
-      double centerY;
-      double dist1Center;
-      double dist2Center;
-      double dist3Center;
+      double dist12;
+      double dist13;
+      double dist23;
+      double semiParameter;
+      double triangleArea;
+      double circumradius;
 
-      //Loop over all consecutive sets of 3 points to see if any of the sets has
-      //points outside RADIUS1
+      if (RADIUS1 < 0 || xCoordinates.length < 0 || yCoordinates.length < 0) return false;
+
+      // Loop over all consecutive sets of 3 points to see if any of the sets has
+      // at least one point that cannot be contained within RADIUS1
       for (int i = 0; i < xCoordinates.length-2; i++) {
         x1 = xCoordinates[i];
         y1 = yCoordinates[i];
@@ -30,17 +33,22 @@ public class ConditionsMetVector {
         x3 = xCoordinates[i+2];
         y3 = yCoordinates[i+2];
 
-        //Get center of triangle and circle
-        centerX = (x1+x2+x3)/3;
-        centerY = (y1+y2+y3)/3;
+        dist12 = Geometry.calculateDistance(x1, y1, x2, y2);
+        dist13 = Geometry.calculateDistance(x1, y1, x3, y3);
+        dist23 = Geometry.calculateDistance(x2, y2, x3, y3);
 
-        //Calculate distance from center to point
-        dist1Center = Geometry.calculateDistance(x1, y1, centerX, centerY);
-        dist2Center = Geometry.calculateDistance(x2, y2, centerX, centerY);
-        dist3Center = Geometry.calculateDistance(x3, y3, centerX, centerY);
+        // Semiparameter to calculate the area of the triangle
+        semiParameter = (dist12 + dist13 + dist23)/2;
 
-        //Condition met if any distance from point to center is greater than RADIUS
-        if (dist1Center > RADIUS1 || dist2Center > RADIUS1 || dist3Center > RADIUS1) return true;
+        // Heron's Formula to find area of triangle
+        triangleArea = Math.sqrt(semiParameter*(semiParameter-dist12)*(semiParameter-dist13)*(semiParameter-dist23));
+
+        // Radius of the circumcircle
+        circumradius = (dist12*dist13*dist23)/(4*triangleArea);
+
+        // if circumradius is larger than radius at least one point cannot be contaied
+        // within the circle
+        if (circumradius > RADIUS1) return true;
       }
       return false;
     }
