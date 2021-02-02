@@ -55,7 +55,46 @@ class DecideTests {
         fuv[4]=false;
         assertFalse(decider.evaluateFUV(fuv));
 
-    }
+  	}
 
+		@Test
+    @DisplayName("Overall test launch true")
+		void overallTestLaunchTrue {
+				// Test launch true 
+				Decide decider = new Decide();
+		    Parameters parameters = new Parameters();
+				parameters.A_PTS = 1;
+				parameters.B_PTS = 1;
+				parameters.C_PTS = 1;
+				parameters.D_PTS = 1;
+				parameters.E_PTS = 1;
+				parameters.F_PTS = 1;
+				parameters.G_PTS = 1;
+				parameters.K_PTS = 1;
+				parameters.N_PTS = 3;
+				parameters.Q_PTS = 2;
+				parameters.AREA1 = 0;
+				parameters.AREA2 = 10000;
+				parameters.DIST = 0;
+				parameters.EPSILON = 0;
+				parameters.LENGTH1 = 0;
+				parameters.LENGTH2 = 10000;
+				parameters.QUADS = 1;
+				parameters.RADIUS1 = 0;
+				parameters.RADIUS2 = 10000;
+				double[] xCoordinates = {-3, 1, 1, -2, 0};
+				double[] yCoordinates = {1, 2, -2, -1, 1}
+				boolean[] puv = {true, true, true, true, true, true, true, true, true, true, true, true, true, true, true};
 
+				//Not yet implemented class - cannot initialize with all ANDD yet
+				LogicalConnectorMatrix lcm = new LogicalConnectorMatrix();
+
+				boolean[] cmv = new boolean[15];
+				boolean[][] pum = new boolean[15][15];
+		    boolean[] fuv = new boolean[15];
+
+				boolean launch = decider.decide(xCoordinates, yCoordinates, parameters, lcm, puv, cmv, pum, fuv);
+				assertTrue(launch);
+
+			}
 }
