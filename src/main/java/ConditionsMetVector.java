@@ -1,3 +1,5 @@
+import java.lang.Math;
+
 public class ConditionsMetVector {
     public boolean calculateRule0(double[] xCoordinates, double[] yCoordinates, double LENGTH1) {
         for(int i = 0; i < xCoordinates.length - 1; i++){
@@ -20,15 +22,15 @@ public class ConditionsMetVector {
 
     public boolean calculateRule2(double[] xCoordinates, double[] yCoordinates, double EPSILON) {
         //issue#4
-        
+
         //point 1
         double p1x = 0;
         double p1y = 0;
-        
+
         //point 2
         double p2x = 0;
         double p2y = 0;
-        
+
         //point 3
         double p3x = 0;
         double p3y = 0;
@@ -58,7 +60,7 @@ public class ConditionsMetVector {
 
             //amgle using (p2x,p2y) as the vertex
             angle = Geometry.calculateAngle(p2x, p2y, p1x, p1y, p3x, p3y);
-            
+
             if (angle < (Math.PI - EPSILON) || angle > (Math.PI + EPSILON)) {
                 return true;
             }
@@ -138,6 +140,22 @@ public class ConditionsMetVector {
 
     public boolean calculateRule11(double[] xCoordinates, double[] yCoordinates, int G_PTS) {
         //issue#13
+
+        // Input check
+        if (xCoordinates.length < 3 || G_PTS > xCoordinates.length-2 || G_PTS < 1) return false;
+
+        double x1;
+        double x2;
+
+        // Loop over xCoordinates to see if (x2-x1 < 0) holds for two points x1 and x2
+        // separated by G_PTS consecutive points
+        for (int i = 0; i < xCoordinates.length-G_PTS-1; i++) {
+          x1 = xCoordinates[i];
+          x2 = xCoordinates[i+G_PTS+1];
+
+          // Condition met
+          if (x2-x1 < 0) return true;
+        }
         return false;
     }
 
