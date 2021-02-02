@@ -351,7 +351,7 @@ public class ConditionsMetVector {
             //point2
             p2x = xCoordinates[i + (K_PTS + 1)];
             p2y = yCoordinates[i + (K_PTS + 1)];
-            
+
             distance = Geometry.calculateDistance(p1x, p1y, p2x, p2y);
             if (distance > LENGTH1 ) {
                 firstCondition=true;
@@ -381,7 +381,21 @@ public class ConditionsMetVector {
             Parameters parameters,
             boolean[] cmv //the createCmv-method sets elements in this array
     ) {
-        //#issue17
+        cmv[0] = calculateRule0(xCoordinates, yCoordinates, parameters.LENGTH1);
+        cmv[1] = calculateRule1(xCoordinates, yCoordinates, parameters.RADIUS1);
+        cmv[2] = calculateRule2(xCoordinates, yCoordinates, parameters.EPSILON);
+        cmv[3] = calculateRule3(xCoordinates, yCoordinates, parameters.AREA1);
+        cmv[4] = calculateRule4(xCoordinates, yCoordinates, parameters.Q_PTS, parameters.QUADS);
+        cmv[5] = calculateRule5(xCoordinates, yCoordinates);
+        cmv[6] = calculateRule6(xCoordinates, yCoordinates, parameters.N_PTS, parameters.DIST);
+        cmv[7] = calculateRule7(xCoordinates, yCoordinates, parameters.K_PTS, parameters.LENGTH1);
+        cmv[8] = calculateRule8(xCoordinates, yCoordinates, parameters.A_PTS, parameters.B_PTS, parameters.RADIUS1);
+        cmv[9] = calculateRule9(xCoordinates, yCoordinates, parameters.C_PTS, parameters.D_PTS, parameters.EPSILON);
+        cmv[10] = calculateRule10(xCoordinates, yCoordinates, parameters.E_PTS, parameters.F_PTS, parameters.AREA1);
+        cmv[11] = calculateRule11(xCoordinates, yCoordinates, parameters.G_PTS);
+        cmv[12] = calculateRule12(xCoordinates, yCoordinates, parameters.K_PTS, parameters.LENGTH1, parameters.LENGTH2);
+        cmv[13] = calculateRule13(xCoordinates, yCoordinates, parameters.A_PTS, parameters.B_PTS, parameters.RADIUS1, parameters.RADIUS2);
+        cmv[14] = calculateRule14(xCoordinates, yCoordinates, parameters.E_PTS, parameters.F_PTS, parameters.AREA1, parameters.AREA2);
     }
 
 }
