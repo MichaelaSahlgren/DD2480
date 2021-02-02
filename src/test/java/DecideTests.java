@@ -1,5 +1,5 @@
 import static org.junit.jupiter.api.Assertions.assertTrue;
-
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -42,4 +42,20 @@ class DecideTests {
     boolean launch = decider.decide(xCoordinates, yCoordinates, parameters, lcm, puv, cmv, pum, fuv);
 		assertTrue(launch);
 	}
+
+    @Test
+    @DisplayName("FUV validInput")
+    void evaluateFUVTest() {
+	    Decide decider = new Decide();
+	    boolean[]fuv= {true,true,true,true,true,true,true,true,true,true,true,true,true,true,true};
+        //should return true as all fuv are true
+	    assertTrue(decider.evaluateFUV(fuv));
+
+	    //should return false as atleast one i is not true
+        fuv[4]=false;
+        assertFalse(decider.evaluateFUV(fuv));
+
+    }
+
+
 }
