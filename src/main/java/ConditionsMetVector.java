@@ -1,4 +1,5 @@
 import java.lang.Math;
+import java.util.Arrays;
 
 public class ConditionsMetVector {
     public boolean calculateRule0(double[] xCoordinates, double[] yCoordinates, double LENGTH1) {
@@ -127,6 +128,42 @@ public class ConditionsMetVector {
 
     public boolean calculateRule6(double[] xCoordinates, double[] yCoordinates, int N_PTS, double DIST) {
         //issue#8
+        //Condition is not met if NUMPOINTS < 3
+        if (xCoordinates.length < 3) return false;
+
+        double distance;
+        double pointX;
+        double pointY;
+        double x1;
+        double x2;
+        double y1;
+        double y2;
+        int i = -1;
+
+        //Loop over all consecutive sets of N_PST points
+        while(i < xCoordinates.length-N_PTS) {
+          i++;
+          x1 = xCoordinates[i];
+          x2 = xCoordinates[i+N_PTS-1];
+          y1 = yCoordinates[i];
+          y2 = yCoordinates[i+N_PTS-1];
+
+          //Check if distance from (pointX, pointY) to the line between
+          //(firstX, firstY) and (lastX, lastY) is greater than DIST
+          for (int j = 1; j < N_PTS; j++) {
+            pointX = xCoordinates[i+j];
+            pointY = yCoordinates[i+j];
+
+            // If the first and last point coinside the distance is to that point
+            if (x1 == x2 && y1 == y2) distance = Geometry.calculateDistance(x1, y1, pointX, pointY);
+
+            // If the first and last point are different the distance is to the line between them
+            else distance = Math.abs((x2-x1)*(y1-pointY)-(x1-pointX)*(y2-y1))/Geometry.calculateDistance(x1, y1, x2, y2);
+
+            //Condition met if the point lays a distance greater than DIST from the line/(point)
+            if (distance > DIST) return true;
+          }
+        }
         return false;
     }
 
