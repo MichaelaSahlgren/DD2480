@@ -145,6 +145,26 @@ class ConditionsMetVectorTest {
     }
 
     @Test
+    @DisplayName("LIC #3 testing if enough points were inputed")
+    void licThreeEnoughPoints(){
+        parameters.AREA1 = 0;
+        double[] xCoordinates = {0, 0};
+        double[] yCoordinates = {1, 1};
+
+        assertFalse(controller.calculateRule3(xCoordinates, yCoordinates, parameters.AREA1));
+    }
+
+    @Test
+    @DisplayName("LIC #3 testing with AREA1 of zero")
+    void licThreeAreaOfZero(){
+        parameters.AREA1 = 0;
+        double[] xCoordinates = {0, 1, 1};
+        double[] yCoordinates = {0, 1, 0};
+
+        assertTrue(controller.calculateRule3(xCoordinates, yCoordinates, parameters.AREA1));
+    }
+
+    @Test
     @DisplayName("LIC #4 tests")
     void licFourTestValid() {
         parameters.Q_PTS = 2;
@@ -406,6 +426,40 @@ class ConditionsMetVectorTest {
         xCoords = new double[]{1, 0, 1, 1, -1, 1};
         yCoords = new double[]{1, 0, 1, 1, -1, 1};
         assertFalse(controller.calculateRule9(xCoords, yCoords, parameters.C_PTS, parameters.D_PTS, parameters.EPSILON));
+    }
+
+    @Test
+    @DisplayName("LIC #10 valid tests")
+    void licTenTestValid(){
+        parameters.E_PTS = 2;
+        parameters.F_PTS = 3;
+        parameters.AREA1 = 8;
+        double[] xCoordinates = {1, 3, 3, 4,  7,  10, 0, -2};
+        double[] yCoordinates = {1, 3, 0, 10, 12, 12, 0, -2};
+        assertTrue(controller.calculateRule10(xCoordinates, yCoordinates, parameters.E_PTS, parameters.F_PTS, parameters.AREA1));
+
+        parameters.E_PTS = 1;
+        parameters.F_PTS = 1;
+        parameters.AREA1 = 29;
+        assertTrue(controller.calculateRule10(xCoordinates, yCoordinates, parameters.E_PTS, parameters.F_PTS, parameters.AREA1));
+    }
+
+    @Test
+    @DisplayName("LIC #10 invalid tests")
+    void licTenTestInvalid(){
+        //Test not enough input
+        parameters.E_PTS = 3;
+        parameters.F_PTS = 1;
+        parameters.AREA1 = 0;
+        double[] xCoordinates = {1, 3, 3, 5,  7,  10};
+        double[] yCoordinates = {1, 3, 0, 10, 12, 12};
+        assertFalse(controller.calculateRule10(xCoordinates, yCoordinates, parameters.E_PTS, parameters.F_PTS, parameters.AREA1));
+
+        //AREA1 to large
+        parameters.E_PTS = 2;
+        parameters.F_PTS = 1;
+        parameters.AREA1 = 19;
+        assertFalse(controller.calculateRule10(xCoordinates, yCoordinates, parameters.E_PTS, parameters.F_PTS, parameters.AREA1));
     }
 
     @Test
