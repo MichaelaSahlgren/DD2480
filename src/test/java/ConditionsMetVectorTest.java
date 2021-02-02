@@ -14,7 +14,7 @@ class ConditionsMetVectorTest {
         controller = new ConditionsMetVector();
         parameters = new Parameters();
     }
-    
+
     @Test
     @DisplayName("LIC #0 is correct for no coordinates")
     void licZeroReturnsFalseWhenCoordinatesIsEmpty(){
@@ -103,6 +103,66 @@ class ConditionsMetVectorTest {
     }
 
    
+    @Test
+    @DisplayName("LIC #4 tests")
+    void licFourTestValid() {
+        parameters.Q_PTS = 2;
+        parameters.QUADS = 2;
+
+        //true Test cases
+        //returns true when there are Q_PTS consecutive data points in QUADS quadrants at beginning of array
+        double[] xCoords = {1, -1, 1, -1, 1};
+        double[] yCoords = {1, 1, 0, -2, 2};
+
+        assertTrue(controller.calculateRule4(xCoords, yCoords, parameters.Q_PTS, parameters.QUADS));
+
+        //returns true when there are Q_PTS consecutive data points in QUADS quadrants in middle of array
+        xCoords = new double[]{1, 2, 0, -1, 1};
+        yCoords = new double[]{1, 1, 1, -2, 2};
+
+        assertTrue(controller.calculateRule4(xCoords, yCoords, parameters.Q_PTS, parameters.QUADS));
+
+        //returns true when there are Q_PTS consecutive data points in QUADS quadrants at the end of array
+        xCoords = new double[]{1, 2, 0, -1};
+        yCoords = new double[]{1, 1, 1, -2};
+
+        assertTrue(controller.calculateRule4(xCoords, yCoords, parameters.Q_PTS, parameters.QUADS));
+
+        //false TEST cases
+        //returns false when xCoords.length < Q_PTS
+        xCoords = new double[] {1};
+        yCoords = new double[] {1};
+
+        assertFalse(controller.calculateRule4(xCoords, yCoords, parameters.Q_PTS, parameters.QUADS));
+
+        //returns false when y.Coords.length < Q_PTS
+        xCoords = new double[] {1,1,1};
+        yCoords = new double[] {};
+
+        assertFalse(controller.calculateRule4(xCoords, yCoords, parameters.Q_PTS, parameters.QUADS));
+
+        //returns false when QUADS is out of range
+        xCoords = new double[] {1,2,3};
+        yCoords = new double[] {1,3,4};
+        int tmpQUADS = 5;
+
+        assertFalse(controller.calculateRule4(xCoords, yCoords, parameters.Q_PTS, tmpQUADS));
+
+        //returns false when no subset meets the conditions of LIC4
+        xCoords = new double[] {1,2,3};
+        yCoords = new double[] {1,3,4};
+
+        assertFalse(controller.calculateRule4(xCoords, yCoords, parameters.Q_PTS, parameters.QUADS));
+
+        //returns false when the data points lies in too few QUADS
+        xCoords = new double[] {1,-1,0};
+        yCoords = new double[] {1,1,0};
+        tmpQUADS = 3;
+
+        assertFalse(controller.calculateRule4(xCoords, yCoords, parameters.Q_PTS, tmpQUADS));
+
+    }
+
     @Test
     @DisplayName("LIC #5 returns true when there exist two consecutive data points where the second xCoordinate is less than the first one")
     void licFiveReturnsTrueWhenAllXCoordinatesAreNotIncreasing(){
