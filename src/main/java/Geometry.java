@@ -14,4 +14,14 @@ public class Geometry{
     return Math.acos((sideA * sideA + sideB * sideB - sideC * sideC)/(2.0 * sideA * sideB));
   }
 
+  public static double calculateTriangleArea(double x1, double y1, double x2, double y2, double x3, double y3){
+    double vertexX = x2;
+    double vertexY = y2;
+    double dist1 = calculateDistance(x1, y1, vertexX, vertexY);
+    double dist2 = calculateDistance(x3, y3, vertexX, vertexY);
+    double angle = calculateAngle(vertexX,vertexY, x1, y1, x3, y3);
+    double triangleArea = (dist1*dist2*Math.sin(angle))/2;
+    return triangleArea;
+  }
+
 }

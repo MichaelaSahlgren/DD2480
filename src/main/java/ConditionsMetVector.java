@@ -166,18 +166,28 @@ public class ConditionsMetVector {
         double p3y = 0;
         double area = 0;
         boolean[] conditions = new boolean[2];
+        int p2idx;
+        int p3idx;
 
         for(int i = 0; i<xCoordinates.length-(E_PTS+F_PTS)-2; i++){
             p1x = xCoordinates[i];
             p1y = yCoordinates[i];
 
-            p2x = xCoordinates[i+E_PTS+1];
-            p2y = yCoordinates[i+E_PTS+1];
+//            p2x = xCoordinates[i+E_PTS+1];
+//            p2y = yCoordinates[i+E_PTS+1];
+//
+//            p3x = xCoordinates[i+E_PTS+F_PTS+2];
+//            p3y = yCoordinates[i+E_PTS+F_PTS+2];
 
-            p3x = xCoordinates[i+E_PTS+F_PTS+2];
-            p3y = yCoordinates[i+E_PTS+F_PTS+2];
+            p2idx = i + E_PTS + 1;
+            p2x = xCoordinates[p2idx];
+            p2y = yCoordinates[p2idx];
 
-            area = Math.abs((p1x*(p2y - p3y) + p2x*(p3y - p1y) + p3x*(p1y - p2y)) / 2);//Geometry.calculateTriangleArea();
+            p3idx = p2idx + F_PTS + 1;
+            p3x = xCoordinates[p3idx];
+            p3y = yCoordinates[p3idx];
+
+            area = Geometry.calculateTriangleArea(p1x,p1y,p2x,p2y,p3x,p3y);//Geometry.calculateTriangleArea();
 
             if(area > AREA1){
                 conditions[0] = true;
@@ -187,9 +197,7 @@ public class ConditionsMetVector {
             }
         }
 
-        if(conditions[0] && conditions[1]) return true;
-
-        return false;
+        return conditions[0] && conditions[1];
     }
 
     public void createCmv(
