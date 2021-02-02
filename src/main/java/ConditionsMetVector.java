@@ -1,4 +1,6 @@
 import java.lang.Math;
+import java.util.Arrays;
+
 
 public class ConditionsMetVector {
     public boolean calculateRule0(double[] xCoordinates, double[] yCoordinates, double LENGTH1) {
@@ -16,8 +18,50 @@ public class ConditionsMetVector {
     }
 
     public boolean calculateRule1(double[] xCoordinates, double[] yCoordinates, double RADIUS1) {
-        //issue#3
-        return false;
+      //issue#3
+      double x1;
+      double y1;
+      double x2;
+      double y2;
+      double x3;
+      double y3;
+      double dist12;
+      double dist13;
+      double dist23;
+      double semiParameter;
+      double triangleArea;
+      double circumradius;
+
+      if (RADIUS1 < 0 || xCoordinates.length < 0 || yCoordinates.length < 0) return false;
+
+      // Loop over all consecutive sets of 3 points to see if any of the sets has
+      // at least one point that cannot be contained within RADIUS1
+      for (int i = 0; i < xCoordinates.length-2; i++) {
+        x1 = xCoordinates[i];
+        y1 = yCoordinates[i];
+        x2 = xCoordinates[i+1];
+        y2 = yCoordinates[i+1];
+        x3 = xCoordinates[i+2];
+        y3 = yCoordinates[i+2];
+
+        dist12 = Geometry.calculateDistance(x1, y1, x2, y2);
+        dist13 = Geometry.calculateDistance(x1, y1, x3, y3);
+        dist23 = Geometry.calculateDistance(x2, y2, x3, y3);
+
+        // Semiparameter to calculate the area of the triangle
+        semiParameter = (dist12 + dist13 + dist23)/2;
+
+        // Heron's Formula to find area of triangle
+        triangleArea = Math.sqrt(semiParameter*(semiParameter-dist12)*(semiParameter-dist13)*(semiParameter-dist23));
+
+        // Radius of the circumcircle
+        circumradius = (dist12*dist13*dist23)/(4*triangleArea);
+
+        // if circumradius is larger than radius at least one point cannot be contaied
+        // within the circle
+        if (circumradius > RADIUS1) return true;
+      }
+      return false;
     }
 
     public boolean calculateRule2(double[] xCoordinates, double[] yCoordinates, double EPSILON) {
@@ -71,7 +115,21 @@ public class ConditionsMetVector {
     }
 
     public boolean calculateRule3(double[] xCoordinates, double[] yCoordinates, double AREA1) {
-        //issue#5
+      if(xCoordinates.length < 3){
+        return false;
+      }
+      for (int i = 0; i < (xCoordinates.length - 2); i++) {
+        double x1 = xCoordinates[i];
+        double y1 = yCoordinates[i];
+        double x2 = xCoordinates[i+1];
+        double y2 = yCoordinates[i+1];
+        double x3 = xCoordinates[i+2];
+        double y3 = yCoordinates[i+2];
+        double triangleArea = Geometry.calculateTriangleArea(x1, y1, x2, y2, x3, y3);
+        if(triangleArea>AREA1){
+          return true;
+        }
+      }
         return false;
     }
 
@@ -127,6 +185,42 @@ public class ConditionsMetVector {
 
     public boolean calculateRule6(double[] xCoordinates, double[] yCoordinates, int N_PTS, double DIST) {
         //issue#8
+        //Condition is not met if NUMPOINTS < 3
+        if (xCoordinates.length < 3) return false;
+
+        double distance;
+        double pointX;
+        double pointY;
+        double x1;
+        double x2;
+        double y1;
+        double y2;
+        int i = -1;
+
+        //Loop over all consecutive sets of N_PST points
+        while(i < xCoordinates.length-N_PTS) {
+          i++;
+          x1 = xCoordinates[i];
+          x2 = xCoordinates[i+N_PTS-1];
+          y1 = yCoordinates[i];
+          y2 = yCoordinates[i+N_PTS-1];
+
+          //Check if distance from (pointX, pointY) to the line between
+          //(firstX, firstY) and (lastX, lastY) is greater than DIST
+          for (int j = 1; j < N_PTS; j++) {
+            pointX = xCoordinates[i+j];
+            pointY = yCoordinates[i+j];
+
+            // If the first and last point coinside the distance is to that point
+            if (x1 == x2 && y1 == y2) distance = Geometry.calculateDistance(x1, y1, pointX, pointY);
+
+            // If the first and last point are different the distance is to the line between them
+            else distance = Math.abs((x2-x1)*(y1-pointY)-(x1-pointX)*(y2-y1))/Geometry.calculateDistance(x1, y1, x2, y2);
+
+            //Condition met if the point lays a distance greater than DIST from the line/(point)
+            if (distance > DIST) return true;
+          }
+        }
         return false;
     }
 

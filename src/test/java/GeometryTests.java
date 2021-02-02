@@ -65,27 +65,29 @@ class GeometryTests {
     }
 
     @Test
-    @DisplayName("Calculate angle returns correct area for simple triangle")
-    void calculateTriangleAreaValid1() {
-        double[] xCoordinates = {0, 10, 20};
-        double[] yCoordinates = {0, 20, 0};
-        double expectedArea = 200;
-        assertEquals(
-            Geometry.calculateTriangleArea(xCoordinates[0], yCoordinates[0], xCoordinates[1], yCoordinates[1], xCoordinates[2], yCoordinates[2]), 
-            expectedArea
-        );
-    }
-    @Test
-    @DisplayName("Calculate angle returns correct area for twisted triangle")
-    void calculateTriangleAreaValid2() {
-        double[] xCoordinates = {-4, 10, -17};
-        double[] yCoordinates = {-5, 15, 5};
-        double expectedArea = 200;
-        assertEquals(
-            Geometry.calculateTriangleArea(xCoordinates[0], yCoordinates[0], xCoordinates[1], yCoordinates[1], xCoordinates[2], yCoordinates[2]), 
-            expectedArea
-        );
+    @DisplayName("Calculate triangle area normal case")
+    void calculateTriangleAreaNormal() {
+
+        double[] xCoordinates = {0, 1, 0};
+        double[] yCoordinates = {0, 1, 1};
+        double expectedArea = 0.5;
+        double area = Geometry.calculateTriangleArea(xCoordinates[0], yCoordinates[0], xCoordinates[1], yCoordinates[1], xCoordinates[2], yCoordinates[2]);
+
+        assertEquals(expectedArea, area, 0.0000000001f);
+
     }
 
-    
+    @Test
+    @DisplayName("Calculate triangle area edge case")
+    void calculateTriangleAreaEdgeCase() {
+
+        double[] xCoordinates = {0, 1, 0};
+        double[] yCoordinates = {0, 1, 0};
+        double expectedArea = 0;
+        double area = Geometry.calculateTriangleArea(xCoordinates[0], yCoordinates[0], xCoordinates[1], yCoordinates[1], xCoordinates[2], yCoordinates[2]);
+
+        assertEquals(expectedArea, area, 0.0000000001f);
+
+    }
+
 }
