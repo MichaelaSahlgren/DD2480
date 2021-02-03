@@ -1,13 +1,19 @@
 public class PreliminaryUnlockingMatrix {
     public void createPum(
-        boolean[] cmv,
-        LogicalConnectorMatrix lcm,
-        boolean[][] pum //createPum populates the values in pum
+    boolean[] cmv,
+    LogicalConnectorMatrix lcm,
+    boolean[][] pum //createPum populates the values in pum
     ) {
-        //issue#19
-        for(int i = 0; i < 15; i++){
-            for(int j = 0; j < 15; j++){
-                pum[i][j] = lcm.calculate(i, j, cmv[i], cmv[j]);
+        for (int i = 0; i < 15; i++) {
+            for (int j = 0; j < 15; j++) {
+                if (lcm.matrix[i][j] == LcmValue.ANDD) {
+                    pum[i][j] = cmv[i] && cmv[j];
+                } else if (lcm.matrix[i][j] == LcmValue.ORR) {
+                    pum[i][j] = cmv[i] || cmv[j];
+                } else {
+                    //it must be NOTUSED
+                    pum[i][j] = true;
+                }
             }
         }
     }

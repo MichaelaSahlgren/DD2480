@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 
 class ConditionsMetVectorTest {
     ConditionsMetVector controller;
@@ -62,6 +63,48 @@ class ConditionsMetVectorTest {
     }
 
     @Test
+    @DisplayName("LIC #1 test invalid inputs")
+    void licOneInvalidInputTest() {
+
+        // RADIUS1 < 0 invalid
+        parameters.RADIUS1 = -1;
+        double[] xCoords = {3, 1, 2};
+        double[] yCoords = {1, 2, 3};
+
+        boolean falseTest = controller.calculateRule1(xCoords,yCoords,parameters.RADIUS1);
+        assertFalse(falseTest);
+    }
+
+    @Test
+    @DisplayName("LIC #1 valid tests")
+    void licOneTestValid() {
+
+        // True test, points have same x-vlaue i.e no angle
+        parameters.RADIUS1 = 2;
+
+        double[] xCoords = {1, 1, 1};
+        double[] yCoords = {0, 4, 5};
+
+        Boolean trueTest = controller.calculateRule1(xCoords,yCoords,parameters.RADIUS1);
+        assertTrue(trueTest);
+
+        // True test, at least one point cannot be contaied within the circle
+        parameters.RADIUS1 = 1.5;
+
+        xCoords = new double[]{-2, 2, 3};
+        yCoords = new double[]{1, 3, 2};
+
+        trueTest = controller.calculateRule1(xCoords,yCoords,parameters.RADIUS1);
+        assertTrue(trueTest);
+
+        // False test, all points contained within the circle
+        parameters.RADIUS1 = 3;
+
+        Boolean falseTest = controller.calculateRule1(xCoords,yCoords,parameters.RADIUS1);
+        assertFalse(falseTest);
+    }
+
+    @Test
     @DisplayName("LIC #2 tests")
     void licTwoTestValid() {
 
@@ -103,10 +146,30 @@ class ConditionsMetVectorTest {
     }
 
     @Test
+    @DisplayName("LIC #3 testing if enough points were inputed")
+    void licThreeEnoughPoints(){
+        parameters.AREA1 = 0;
+        double[] xCoordinates = {0, 0};
+        double[] yCoordinates = {1, 1};
+
+        assertFalse(controller.calculateRule3(xCoordinates, yCoordinates, parameters.AREA1));
+    }
+
+    @Test
+    @DisplayName("LIC #3 testing with AREA1 of zero")
+    void licThreeAreaOfZero(){
+        parameters.AREA1 = 0;
+        double[] xCoordinates = {0, 1, 1};
+        double[] yCoordinates = {0, 1, 0};
+
+        assertTrue(controller.calculateRule3(xCoordinates, yCoordinates, parameters.AREA1));
+    }
+
+    @Test
     @DisplayName("LIC #4 tests")
     void licFourTestValid() {
         parameters.Q_PTS = 2;
-        parameters.QUADS = 2;
+        parameters.QUADS = 1;
 
         //true Test cases
         //returns true when there are Q_PTS consecutive data points in QUADS quadrants at beginning of array
@@ -161,7 +224,7 @@ class ConditionsMetVectorTest {
         assertFalse(controller.calculateRule4(xCoords, yCoords, parameters.Q_PTS, tmpQUADS));
 
     }
-  
+
     @Test
     @DisplayName("LIC #5 returns true when there exist two consecutive data points where the second xCoordinate is less than the first one")
     void licFiveReturnsTrueWhenAllXCoordinatesAreNotIncreasing(){
@@ -178,74 +241,74 @@ class ConditionsMetVectorTest {
 
         assertFalse(controller.calculateRule5(xCoordinates, yCoordinates));
     }
-  
+
     @Test
     @DisplayName("LIC #6 valid when N_PTS = NUMPOINTS")
     void licSixValidWhenN_PTSEqualsNUMPOINTS() {
 
-      // True test, all points futher than DIST from the line
-      parameters.N_PTS = 6;
-      parameters.DIST = 1;
+        // True test, all points futher than DIST from the line
+        parameters.N_PTS = 6;
+        parameters.DIST = 1;
 
-      double[] xCoords = {-2, -2, -2, -4, 0, 2};
-      double[] yCoords = {-4, -2, 0, 1, 2, 0};
+        double[] xCoords = {-2, -2, -2, -4, 0, 2};
+        double[] yCoords = {-4, -2, 0, 1, 2, 0};
 
-      Boolean trueTest = controller.calculateRule6(xCoords, yCoords, parameters.N_PTS, parameters.DIST);
-      assertTrue(trueTest);
+        Boolean trueTest = controller.calculateRule6(xCoords, yCoords, parameters.N_PTS, parameters.DIST);
+        assertTrue(trueTest);
 
-      // True test, one point futher than DIST from the line
-      parameters.DIST = 4;
+        // True test, one point futher than DIST from the line
+        parameters.DIST = 4;
 
-      trueTest = controller.calculateRule6(xCoords, yCoords, parameters.N_PTS, parameters.DIST);
-      assertTrue(trueTest);
+        trueTest = controller.calculateRule6(xCoords, yCoords, parameters.N_PTS, parameters.DIST);
+        assertTrue(trueTest);
 
-      // False test, no points futher than DIST from the line
-      parameters.DIST = 5;
+        // False test, no points futher than DIST from the line
+        parameters.DIST = 5;
 
-      Boolean falseTest = controller.calculateRule6(xCoords, yCoords, parameters.N_PTS, parameters.DIST);
-      assertFalse(falseTest);
+        Boolean falseTest = controller.calculateRule6(xCoords, yCoords, parameters.N_PTS, parameters.DIST);
+        assertFalse(falseTest);
     }
 
     @Test
     @DisplayName("LIC #6 invalid when N_PTS > NUMPOINTS")
     void licSixValidWhenN_PTSLargerThanNUMPOINTS() {
-      // Invalid input N_PST > NUMPOINTS
-      parameters.N_PTS = 7;
-      parameters.DIST = 1;
+        // Invalid input N_PST > NUMPOINTS
+        parameters.N_PTS = 7;
+        parameters.DIST = 1;
 
-      double[] xCoords = {-2, -2, -2, -4, 0, 2};
-      double[] yCoords = {-4, -2, 0, 1, 2, 0};
+        double[] xCoords = {-2, -2, -2, -4, 0, 2};
+        double[] yCoords = {-4, -2, 0, 1, 2, 0};
 
-      Boolean falseTest = controller.calculateRule6(xCoords, yCoords, parameters.N_PTS, parameters.DIST);
-      assertFalse(falseTest);
+        Boolean falseTest = controller.calculateRule6(xCoords, yCoords, parameters.N_PTS, parameters.DIST);
+        assertFalse(falseTest);
     }
 
     @Test
     @DisplayName("LIC #6 valid when N_PTS < NUMPOINTS")
     void licSixValidWhenN_PTSLessThanNUMPOINTS() {
-      // True test, at least one point futher than DIST from the line
-      parameters.N_PTS = 3;
-      parameters.DIST = 1;
+        // True test, at least one point futher than DIST from the line
+        parameters.N_PTS = 3;
+        parameters.DIST = 1;
 
-      double[] xCoords = {-2, -2, -2, -4, 0, 2};
-      double[] yCoords = {-4, -2, 0, 1, 2, 0};
+        double[] xCoords = {-2, -2, -2, -4, 0, 2};
+        double[] yCoords = {-4, -2, 0, 1, 2, 0};
 
-      Boolean trueTest = controller.calculateRule6(xCoords, yCoords, parameters.N_PTS, parameters.DIST);
-      assertTrue(trueTest);
+        Boolean trueTest = controller.calculateRule6(xCoords, yCoords, parameters.N_PTS, parameters.DIST);
+        assertTrue(trueTest);
 
-      // False test, no point further than DIST from the line
-      parameters.N_PTS = 3;
-      parameters.DIST = 10;
+        // False test, no point further than DIST from the line
+        parameters.N_PTS = 3;
+        parameters.DIST = 10;
 
-      xCoords = new double[]{-4, -3, 0, -2, -2};
-      yCoords = new double[]{-1, 0, 2, -2, -4};
+        xCoords = new double[]{-4, -3, 0, -2, -2};
+        yCoords = new double[]{-1, 0, 2, -2, -4};
 
-      Boolean falseTest = controller.calculateRule6(xCoords, yCoords, parameters.N_PTS, parameters.DIST);
-      assertFalse(falseTest);
+        Boolean falseTest = controller.calculateRule6(xCoords, yCoords, parameters.N_PTS, parameters.DIST);
+        assertFalse(falseTest);
     }
 
-   @Test
-   @DisplayName("LIC #7 Valid test")
+    @Test
+    @DisplayName("LIC #7 Valid test")
     void licSevenTestValid() {
 
         parameters.LENGTH1=3;
@@ -291,7 +354,56 @@ class ConditionsMetVectorTest {
         assertFalse(controller.calculateRule7(xCoords,yCoords,parameters.K_PTS,parameters.LENGTH1));
 
     }
-  
+
+    @Test
+    @DisplayName("LIC #8 InvalidInputs")
+    void licEightTestInvalidInputs() {
+        parameters.A_PTS = 2;
+        parameters.B_PTS = 1;
+        parameters.RADIUS1 = 1;
+
+        double[] xCoords = {0, 0, 0, 0, 0};
+        double[] yCoords = {1, 1, 1, 1, 1};
+        //should return false as the input is invalid.. NUMPOINTS is not high enough
+        assertFalse(controller.calculateRule8(xCoords, yCoords, parameters.A_PTS, parameters.B_PTS, parameters.RADIUS1));
+
+        parameters.A_PTS = 0;
+        parameters.B_PTS = 1;
+        parameters.RADIUS1 = 1;
+
+        double[] xCoords2 = {0, 0, 0, 0, 0};
+        double[] yCoords2 = {1, 1, 1, 1, 1};
+        //should return false as the input is invalid.. A_PTS is too small
+        assertFalse(controller.calculateRule8(xCoords2, yCoords2, parameters.A_PTS, parameters.B_PTS, parameters.RADIUS1));
+    }
+
+    @Test
+    @DisplayName("LIC #8 Valid Inputs")
+    void licEightTestValidInputs() {
+        parameters.A_PTS = 1;
+        parameters.B_PTS = 1;
+        parameters.RADIUS1 = 1;
+
+        double[] xCoords = {0, -1, 3, -1, 0};
+        double[] yCoords = {0, -1, 3, -1, 3};
+        //should return true as the points don't fit in a circle of radius 1
+        assertTrue(controller.calculateRule8(xCoords, yCoords, parameters.A_PTS, parameters.B_PTS, parameters.RADIUS1));
+    }
+
+    @Test
+    @DisplayName("LIC #8 Valid Inputs with two positions")
+    void licEightTestValidInputsTwoPositions() {
+        parameters.A_PTS = 1;
+        parameters.B_PTS = 1;
+        parameters.RADIUS1 = 3;
+
+        double[] xCoords = {0, 3, 7, 4, 7, 4};
+        double[] yCoords = {0, 3, 7, 4, 0, 3};
+        //should return true as there is a small triangle and a big triangle,
+        //where the big triangle won't fit in a circle of radius 3
+        assertTrue(controller.calculateRule8(xCoords, yCoords, parameters.A_PTS, parameters.B_PTS, parameters.RADIUS1));
+    }
+
     @Test
     @DisplayName("LIC #9 tests")
     void licNineTestValid() {
@@ -330,7 +442,41 @@ class ConditionsMetVectorTest {
         yCoords = new double[]{1, 0, 1, 1, -1, 1};
         assertFalse(controller.calculateRule9(xCoords, yCoords, parameters.C_PTS, parameters.D_PTS, parameters.EPSILON));
     }
-  
+
+    @Test
+    @DisplayName("LIC #10 valid tests")
+    void licTenTestValid(){
+        parameters.E_PTS = 2;
+        parameters.F_PTS = 3;
+        parameters.AREA1 = 8;
+        double[] xCoordinates = {1, 3, 3, 4,  7,  10, 0, -2};
+        double[] yCoordinates = {1, 3, 0, 10, 12, 12, 0, -2};
+        assertTrue(controller.calculateRule10(xCoordinates, yCoordinates, parameters.E_PTS, parameters.F_PTS, parameters.AREA1));
+
+        parameters.E_PTS = 1;
+        parameters.F_PTS = 1;
+        parameters.AREA1 = 29;
+        assertTrue(controller.calculateRule10(xCoordinates, yCoordinates, parameters.E_PTS, parameters.F_PTS, parameters.AREA1));
+    }
+
+    @Test
+    @DisplayName("LIC #10 invalid tests")
+    void licTenTestInvalid(){
+        //Test not enough input
+        parameters.E_PTS = 3;
+        parameters.F_PTS = 1;
+        parameters.AREA1 = 0;
+        double[] xCoordinates = {1, 3, 3, 5,  7,  10};
+        double[] yCoordinates = {1, 3, 0, 10, 12, 12};
+        assertFalse(controller.calculateRule10(xCoordinates, yCoordinates, parameters.E_PTS, parameters.F_PTS, parameters.AREA1));
+
+        //AREA1 to large
+        parameters.E_PTS = 2;
+        parameters.F_PTS = 1;
+        parameters.AREA1 = 19;
+        assertFalse(controller.calculateRule10(xCoordinates, yCoordinates, parameters.E_PTS, parameters.F_PTS, parameters.AREA1));
+    }
+
     @Test
     @DisplayName("LIC #11 invalid inputs")
     void licElevenTestInvalidInputs() {
@@ -377,7 +523,7 @@ class ConditionsMetVectorTest {
         falseTest = controller.calculateRule11(xCoords, yCoords, parameters.G_PTS);
         assertFalse(falseTest);
     }
-  
+
     @Test
     @DisplayName("LIC #12 Valid test")
     void licTwelveTestValid() {
@@ -407,8 +553,8 @@ class ConditionsMetVectorTest {
 
         parameters.LENGTH2=0.5;
         //should return false as condition2 is never fullfilled
-         xCoords = new double[]{1, -1, 0, 5, 1};
-         yCoords = new double[]{2, -2, 0, 8, 2};
+        xCoords = new double[]{1, -1, 0, 5, 1};
+        yCoords = new double[]{2, -2, 0, 8, 2};
 
         assertFalse(controller.calculateRule12(xCoords,yCoords,parameters.K_PTS,parameters.LENGTH1,parameters.LENGTH2));
 
@@ -445,4 +591,265 @@ class ConditionsMetVectorTest {
         //should return false as Length2 is negative
         assertFalse(controller.calculateRule12(xCoords,yCoords,parameters.K_PTS,parameters.LENGTH1,parameters.LENGTH2));
     }
+
+    @Test
+    @DisplayName("LIC #13 InvalidInputs")
+    void licThirteenTestInvalidInputs() {
+        double[] xCoords = {0, 0, 0, 0, 0};
+        double[] yCoords = {1, 1, 1, 1, 1};
+        //should return false as the input is invalid.. NUMPOINTS is not high enough
+        assertFalse(controller.calculateRule13(xCoords, yCoords, 2, 1, 1.0, 2.0));
+
+        double[] xCoords2 = {0, 0, 0, 0, 0};
+        double[] yCoords2 = {1, 1, 1, 1, 1};
+        //should return false as the input is invalid.. A_PTS is too small
+        assertFalse(controller.calculateRule13(xCoords2, yCoords2, 0, 1, 1.0, 2.0));
+    }
+
+    @Test
+    @DisplayName("LIC #13 Valid Inputs")
+    void licThirteenTestValidInputs() {
+        double[] xCoords = {0, -1, 3, -1, 0};
+        double[] yCoords = {0, -1, 3, -1, 3};
+        //should return true as the points don't fit in a circle of radius 1 but they do fit in a circle of radius 3
+        assertTrue(controller.calculateRule13(xCoords, yCoords, 1, 1, 1.0, 3.0));
+    }
+
+    @Test
+    @DisplayName("LIC #13 Valid Inputs with two positions")
+    void licThirteenTestValidInputsTwoPositions() {
+        parameters.A_PTS = 1;
+        parameters.B_PTS = 1;
+        parameters.RADIUS1 = 3;
+        parameters.RADIUS2 = 3;
+
+        double[] xCoords = {0, 3, 7, 4, 7, 4};
+        double[] yCoords = {0, 3, 7, 4, 0, 3};
+        //should return true as there is a small triangle and a big triangle,
+        //where the big triangle won't fit in a circle of radius 3, and
+        //the small triangle will
+        assertTrue(controller.calculateRule13(xCoords, yCoords, parameters.A_PTS, parameters.B_PTS, parameters.RADIUS1, parameters.RADIUS2));
+    }
+
+   @Test
+    @DisplayName("LIC #14 valid inputs")
+    void licFourteenTestValidInputs() {
+        parameters.E_PTS = 1;
+        parameters.F_PTS = 1;
+        parameters.AREA1 = 1;
+        parameters.AREA2 = 5;
+
+        //true Test cases
+        //returns true when one triangle meets the conditions for LIC14
+        double[] xCoords = {0, 1, 2, 5, 0};
+        double[] yCoords = {0, 0, 0, 0, 2};
+
+        assertTrue(controller.calculateRule14(xCoords, yCoords, parameters.E_PTS, parameters.F_PTS, parameters.AREA1, parameters.AREA2));
+
+        //returns true when more than one triangle meets the conditions for LIC14
+        xCoords = new double[] {1, 0, 2, 5, 0, 0};
+        yCoords = new double[] {0, 0, 0, 0, 2, 5};
+
+        assertTrue(controller.calculateRule14(xCoords, yCoords, parameters.E_PTS, parameters.F_PTS, parameters.AREA1, parameters.AREA2));
+
+        //false TEST cases
+        //returns false when the first condition for LIC14 isn't met
+        xCoords = new double[] {0, 0, 1, 0, 0};
+        yCoords = new double[] {0, 0, 0, 2, 1};
+
+        assertFalse(controller.calculateRule14(xCoords, yCoords, parameters.E_PTS, parameters.F_PTS, parameters.AREA1, parameters.AREA2));
+
+        //returns false when the second condition for LIC14 isn't met
+        xCoords = new double[] {1, 0, 5, 0, 1};
+        yCoords = new double[] {1, 0, 1, 2, 5};
+
+        assertFalse(controller.calculateRule14(xCoords, yCoords, parameters.E_PTS, parameters.F_PTS, parameters.AREA1, parameters.AREA2));
+
+    }
+
+    @Test
+    @DisplayName("LIC #14 invalid inputs")
+    void licFourteenTestInvalidInputs() {
+        parameters.E_PTS = 1;
+        parameters.F_PTS = 1;
+        parameters.AREA1 = 1;
+        parameters.AREA2 = 5;
+
+        //false TEST cases
+        //returns false when there aren't the same number of x-coordinates and y-coordinates
+        double[] xCoords = {1,2};
+        double[] yCoords = {1};
+
+        assertFalse(controller.calculateRule14(xCoords, yCoords, parameters.E_PTS, parameters.F_PTS, parameters.AREA1, parameters.AREA2));
+
+        //returns false when xCoords.length < 5 (or yCoords.length < 5)
+        xCoords = new double[] {1};
+        yCoords = new double[] {1};
+
+        assertFalse(controller.calculateRule14(xCoords, yCoords, parameters.E_PTS, parameters.F_PTS, parameters.AREA1, parameters.AREA2));
+
+        //returns false when area = 0
+        xCoords = new double[] {0, 0, 0, 0, 0};
+        yCoords = new double[] {0, 0, 0, 0, 0};
+
+        assertFalse(controller.calculateRule14(xCoords, yCoords, parameters.E_PTS, parameters.F_PTS, parameters.AREA1, parameters.AREA2));
+    }
+
+    @Test
+    @DisplayName("Createcmv all false ok")
+    void cmvAllFalseTest() {
+      double[] xCoordinates = {1, 1, 1};
+      double[] yCoordinates = {2, 2, 2};
+      parameters.LENGTH1 = 0;
+      parameters.RADIUS1 = 0;
+      parameters.EPSILON = 0;
+      parameters.AREA1 = 0;
+      parameters.Q_PTS = 0;
+      parameters.QUADS = 0;
+      parameters.DIST = 0;
+      parameters.N_PTS = 0;
+      parameters.K_PTS = 0;
+      parameters.A_PTS = 0;
+      parameters.B_PTS = 0;
+      parameters.C_PTS = 0;
+      parameters.D_PTS = 0;
+      parameters.E_PTS = 0;
+      parameters.F_PTS = 0;
+      parameters.G_PTS = 0;
+      parameters.LENGTH2 = 0;
+      parameters.RADIUS2 = 0;
+      parameters.AREA2 = 0;
+
+      boolean[] cmv = new boolean[15];
+
+      controller.createCmv(xCoordinates, yCoordinates, parameters, cmv);
+
+      boolean[] cmvCorrect = {false, false, false, false, false, false, false, false, false, false, false, false, false, false, false};
+
+      assertArrayEquals(cmv, cmvCorrect);
+    }
+
+    @Test
+    @DisplayName("All true ok when creating cmv[0] with createCmv")
+    void cmv0WithCreateCmvAllTrueTest() {
+      boolean[] cmv = new boolean[15];
+      boolean[] cmvCorrect = {true, true, true, true, true, true, true, true, true, true, true, true, true, true, true};
+
+      // Ok when creating cmv[0] with createCmv
+      parameters.LENGTH1 = 10;
+      double[] xCoordinates = {1, 3, 3, 5, -3};
+      double[] yCoordinates = {1, 3, 0, 10, 12};
+      controller.createCmv(xCoordinates, yCoordinates, parameters, cmv);
+      cmv[1] = true;
+      cmv[2] = true;
+      cmv[3] = true;
+      cmv[4] = true;
+      cmv[5] = true;
+      cmv[6] = true;
+      cmv[7] = true;
+      cmv[8] = true;
+      cmv[9] = true;
+      cmv[10] = true;
+      cmv[11] = true;
+      cmv[12] = true;
+      cmv[13] = true;
+      cmv[14] = true;
+
+      assertArrayEquals(cmv, cmvCorrect);
+    }
+
+    @Test
+    @DisplayName("All true ok when creating cmv[4] with createCmv")
+    void cmv4WithCreateCmvAllTrueTest() {
+      boolean[] cmv = new boolean[15];
+      boolean[] cmvCorrect = {true, true, true, true, true, true, true, true, true, true, true, true, true, true, true};
+
+      // Ok when creating cmv[4] with createCmv
+      parameters.Q_PTS = 2;
+      parameters.QUADS = 1;
+      double[] xCoordinates = {1, -1, 1, -1, 1};
+      double[] yCoordinates = {1, 1, 0, -2, 2};
+      controller.createCmv(xCoordinates, yCoordinates, parameters, cmv);
+      cmv[0] = true;
+      cmv[1] = true;
+      cmv[2] = true;
+      cmv[3] = true;
+
+      cmv[5] = true;
+      cmv[6] = true;
+      cmv[7] = true;
+      cmv[8] = true;
+      cmv[9] = true;
+      cmv[10] = true;
+      cmv[11] = true;
+      cmv[12] = true;
+      cmv[13] = true;
+      cmv[14] = true;
+
+      assertArrayEquals(cmv, cmvCorrect);
+    }
+
+    @Test
+    @DisplayName("All true ok when creating cmv[7] with createCmv")
+    void cmv7WithCreateCmvAllTrueTest() {
+      boolean[] cmv = new boolean[15];
+      boolean[] cmvCorrect = {true, true, true, true, true, true, true, true, true, true, true, true, true, true, true};
+
+      // Ok when creating cmv[7]
+      parameters.LENGTH1 = 3;
+      parameters.K_PTS = 1;
+      double[] xCoordinates = {1, 1, 5};
+      double[] yCoordinates = {1, 1, 8};
+      controller.createCmv(xCoordinates, yCoordinates, parameters, cmv);
+      cmv[0] = true;
+      cmv[1] = true;
+      cmv[2] = true;
+      cmv[3] = true;
+      cmv[4] = true;
+      cmv[5] = true;
+      cmv[6] = true;
+
+      cmv[8] = true;
+      cmv[9] = true;
+      cmv[10] = true;
+      cmv[11] = true;
+      cmv[12] = true;
+      cmv[13] = true;
+      cmv[14] = true;
+
+      assertArrayEquals(cmv, cmvCorrect);
+    }
+
+    @Test
+    @DisplayName("All true ok when creating cmv[10] with createCmv")
+    void cmv10WithCreateCmvAllTrueTest() {
+      boolean[] cmv = new boolean[15];
+      boolean[] cmvCorrect = {true, true, true, true, true, true, true, true, true, true, true, true, true, true, true};
+
+      // creating cmv[10] with createCmv
+      parameters.E_PTS = 2;
+      parameters.F_PTS = 3;
+      parameters.AREA1 = 8;
+      double[] xCoordinates = {1, 3, 3, 4,  7,  10, 0, -2};
+      double[] yCoordinates = {1, 3, 0, 10, 12, 12, 0, -2};
+      controller.createCmv(xCoordinates, yCoordinates, parameters, cmv);
+      cmv[0] = true;
+      cmv[1] = true;
+      cmv[2] = true;
+      cmv[3] = true;
+      cmv[4] = true;
+      cmv[5] = true;
+      cmv[6] = true;
+      cmv[7] = true;
+      cmv[8] = true;
+      cmv[9] = true;
+
+      cmv[11] = true;
+      cmv[12] = true;
+      cmv[13] = true;
+      cmv[14] = true;
+
+      assertArrayEquals(cmv, cmvCorrect);
+    }
+
 }

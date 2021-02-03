@@ -1,29 +1,32 @@
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 import java.util.Arrays;
 
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Assertions.*;
-import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.*;
-
-
 class PreliminaryUnlockingMatrixTests {
-    PreliminaryUnlockingMatrix pum;
-
-    @BeforeEach
-    public void setUp() throws Exception {
-        pum = new PreliminaryUnlockingMatrix();
+    @Test
+    @DisplayName("LCM all NOTUSED")
+    void lcmAllNOTUSED() {
+        //using the default lcm - all NOTUSED
+        LogicalConnectorMatrix lcm = new LogicalConnectorMatrix();
+        PreliminaryUnlockingMatrix pumGenerator = new PreliminaryUnlockingMatrix();
+        //set all cmv values to false
+        boolean[] cmv = {false, false, false, false, false, false, false, false, false, false, false, false, false, false, false};
+        boolean[][] pum = new boolean[15][15];
+        pumGenerator.createPum(cmv, lcm, pum);
+        //check that one of the pum cells is true
+        assertTrue(pum[3][4]);
     }
-    
+
     @Test
     @DisplayName("Calculate Distance valid")
     void createPumValidTest() {
+        PreliminaryUnlockingMatrix pumGenerator = new PreliminaryUnlockingMatrix();
         boolean[][] matrix = new boolean[15][15];
         boolean[] cmv = {false, true, true, true, true, true, true, true, true, true, true, true, true, true, true};
-        LogicalConnectorMatrix lcm = new LogicalConnectorMatrix();
+        LogicalConnectorMatrix lcm = new LogicalConnectorMatrix("./inputs/lcm1.txt");
         
-        pum.createPum(cmv, lcm, matrix);
+        pumGenerator.createPum(cmv, lcm, matrix);
         boolean[][] correctMatrix = {
             {false, false, true, false, true, true, true, true, true, true, true, true, true, true, true},
             {false, true, true, true, true,  true, true, true, true, true, true, true, true, true, true},
@@ -43,4 +46,4 @@ class PreliminaryUnlockingMatrixTests {
         };
         assertTrue(Arrays.deepEquals(matrix, correctMatrix));
     }
-}
+}    
