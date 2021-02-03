@@ -76,6 +76,7 @@ class DecideTests {
         parameters.AREA2 = 0;
         LogicalConnectorMatrix lcm = new LogicalConnectorMatrix();
         lcm.matrix[0][1] = LcmValue.ANDD;
+        lcm.matrix[1][0] = LcmValue.ANDD;
 
         boolean[] puv = {true, true, false, false, false, false, false, false, false, false, false, false, false, false, false};
         boolean[] cmv = new boolean[15];
