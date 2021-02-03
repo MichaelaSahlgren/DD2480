@@ -51,10 +51,11 @@ class DecideTests {
         // CMV[0] and CMV[1] is set true in PUV
         // CMV[0] is true but CMV[1] is false
         // LCM[0][1] is set to ANDD
+        // Data for coordinates used from  test licZeroReturnsTrueWhenInputConcistsOfTwoCoordinates
         // Therefore the test returns false
         Decide decider = new Decide();
         Parameters parameters = new Parameters();
-        parameters.LENGTH1 = 0;
+        parameters.LENGTH1 = 1;
         parameters.RADIUS1 = 0;
         parameters.EPSILON = 0;
         parameters.AREA1 = 0;
