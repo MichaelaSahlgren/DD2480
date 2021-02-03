@@ -149,7 +149,7 @@ public class ConditionsMetVector {
             for (boolean visitedQuad : visitedQuads) {
                 if (visitedQuad) count++;
             }
-            if(count == QUADS) return true;
+            if(count > QUADS) return true;
         }
         return false;
     }
