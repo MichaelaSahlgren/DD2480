@@ -45,6 +45,46 @@ class DecideTests {
     boolean launch = decider.decide(xCoordinates, yCoordinates, parameters, lcm, puv, cmv, pum, fuv);
 		assertTrue(launch);
 	}
+    @Test
+    @DisplayName("testLaunchFalse")
+    void testLaunchFalse() {
+        // CMV[0] and CMV[1] is set true in PUV
+        // CMV[0] is true but CMV[1] is false
+        // LCM[0][1] is set to ANDD
+        // Therefore the test returns false
+        Decide decider = new Decide();
+        Parameters parameters = new Parameters();
+        parameters.LENGTH1 = 0;
+        parameters.RADIUS1 = 0;
+        parameters.EPSILON = 0;
+        parameters.AREA1 = 0;
+        parameters.Q_PTS = 0;
+        parameters.QUADS = 0;
+        parameters.DIST = 0;
+        parameters.N_PTS = 0;
+        parameters.K_PTS = 0;
+        parameters.A_PTS = 0;
+        parameters.B_PTS = 0;
+        parameters.C_PTS = 0;
+        parameters.D_PTS = 0;
+        parameters.E_PTS = 0;
+        parameters.F_PTS = 0;
+        parameters.G_PTS = 0;
+        parameters.LENGTH2 = 0;
+        parameters.RADIUS2 = 0;
+        parameters.AREA2 = 0;
+        LogicalConnectorMatrix lcm = new LogicalConnectorMatrix();
+        lcm.matrix[0][1] = LcmValue.ANDD;
+
+        boolean[] puv = {true, true, false, false, false, false, false, false, false, false, false, false, false, false, false};
+        boolean[] cmv = new boolean[15];
+        boolean[][] pum = new boolean[15][15];
+        boolean[] fuv = new boolean[15];
+        double[] xCoordinates = {1, 10};
+        double[] yCoordinates = {1, 10};
+        boolean launch = decider.decide(xCoordinates, yCoordinates, parameters, lcm, puv, cmv, pum, fuv);
+        assertFalse(launch);
+    }
 
     @Test
     @DisplayName("FUV validInput")
