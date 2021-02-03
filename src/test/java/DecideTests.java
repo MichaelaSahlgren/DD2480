@@ -62,7 +62,7 @@ class DecideTests {
   	}
 
 		@Test
-    @DisplayName("Overall test launch true")
+		@DisplayName("Overall test launch true")
 		void overallTestLaunchTrue() {
 			// Test launch true
 			Decide decider = new Decide();
@@ -90,7 +90,6 @@ class DecideTests {
 			double[] yCoordinates = {1, 2, -2, -1, 1};
 			boolean[] puv = {true, true, true, true, true, true, true, true, true, true, true, true, true, true, true};
 
-			//Not yet implemented class - cannot initialize with all ANDD yet
 			LogicalConnectorMatrix lcm = new LogicalConnectorMatrix();
 			for (int i = 0; i < 15; i++) {
 				Arrays.fill(lcm.matrix[i], LcmValue.ANDD);
@@ -99,9 +98,7 @@ class DecideTests {
 			boolean[] cmv = new boolean[15];
 			boolean[][] pum = new boolean[15][15];
 	    boolean[] fuv = new boolean[15];
-
 			boolean launch = decider.decide(xCoordinates, yCoordinates, parameters, lcm, puv, cmv, pum, fuv);
-			System.out.println(Arrays.toString(cmv));
 			assertTrue(launch);
 		}
 }
