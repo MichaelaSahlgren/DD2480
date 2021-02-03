@@ -19,7 +19,7 @@ class PreliminaryUnlockingMatrixTests {
     }
 
     @Test
-    @DisplayName("Calculate Distance valid")
+    @DisplayName("createPum is correct when LogicalConnectorMatrix is created from file")
     void createPumValidTest() {
         PreliminaryUnlockingMatrix pumGenerator = new PreliminaryUnlockingMatrix();
         boolean[][] matrix = new boolean[15][15];
