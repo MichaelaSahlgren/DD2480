@@ -169,7 +169,7 @@ class ConditionsMetVectorTest {
     @DisplayName("LIC #4 tests")
     void licFourTestValid() {
         parameters.Q_PTS = 2;
-        parameters.QUADS = 2;
+        parameters.QUADS = 1;
 
         //true Test cases
         //returns true when there are Q_PTS consecutive data points in QUADS quadrants at beginning of array
@@ -630,7 +630,7 @@ class ConditionsMetVectorTest {
         //the small triangle will
         assertTrue(controller.calculateRule13(xCoords, yCoords, parameters.A_PTS, parameters.B_PTS, parameters.RADIUS1, parameters.RADIUS2));
     }
-  
+
    @Test
     @DisplayName("LIC #14 valid inputs")
     void licFourteenTestValidInputs() {
@@ -666,7 +666,7 @@ class ConditionsMetVectorTest {
         assertFalse(controller.calculateRule14(xCoords, yCoords, parameters.E_PTS, parameters.F_PTS, parameters.AREA1, parameters.AREA2));
 
     }
-  
+
     @Test
     @DisplayName("LIC #14 invalid inputs")
     void licFourteenTestInvalidInputs() {
@@ -766,7 +766,7 @@ class ConditionsMetVectorTest {
 
       // Ok when creating cmv[4] with createCmv
       parameters.Q_PTS = 2;
-      parameters.QUADS = 2;
+      parameters.QUADS = 1;
       double[] xCoordinates = {1, -1, 1, -1, 1};
       double[] yCoordinates = {1, 1, 0, -2, 2};
       controller.createCmv(xCoordinates, yCoordinates, parameters, cmv);
