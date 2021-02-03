@@ -34,6 +34,9 @@ class DecideTests {
     parameters.RADIUS2 = 0;
     parameters.AREA2 = 0;
     LogicalConnectorMatrix lcm = new LogicalConnectorMatrix();
+	//we could set a particular cell of the lcm if we wanted to, although
+	//it won't matter for this particular test:
+	lcm.matrix[5][10] = LcmValue.ANDD;
     // Set every element of the input PUV to false:
     boolean[] puv = {false, false, false, false, false, false, false, false, false, false, false, false, false, false, false};
     boolean[] cmv = new boolean[15];
