@@ -28,11 +28,10 @@ The testing has been done using jUnit. All the tests cases can be found in src/t
 LIC = Launch Interceptor Condition
 
 - Fredrik Norlin
-  - Implemented method calculating area between three points
   - Implemented method and testing for LIC0
   - Implemented method and testing for LIC5
   - Implemented method and testing for LIC10
-  - Implemented PreliminaryUnlockingMatrix
+  - Implemented create LogicalConnectorMatrix from textfile
   - Code review
 
 - Frida Wallberg
@@ -58,6 +57,7 @@ LIC = Launch Interceptor Condition
   - Implemented method and testing for LIC3
   - Implemented method and testing for LIC8
   - Implemented method and testing for LIC13
+  - Implemented method calculating area between three points
   - Code review
 
 - Sara Damne
