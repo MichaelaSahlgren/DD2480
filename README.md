@@ -66,5 +66,6 @@ LIC = Launch Interceptor Condition
   - Implemented method and testing for LIC4
   - Implemented method and testing for LIC9
   - Implemented method and testing for LIC14
+  - Implemented one main test case
   - Created README.md
   - Code review
