@@ -40,6 +40,8 @@ LIC = Launch Interceptor Condition
   - Implemented method and testing for LIC6
   - Implemented method and testing for LIC11
   - Implemented ConditionsMetVector
+  - Implemented method for checking if three points fits inside circle
+  - Implemented two main test cases
   - Code review
 
 - George Bassilious
